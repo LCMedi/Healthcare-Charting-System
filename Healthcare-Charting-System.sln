@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI.ChartingSystem", "HC_ConsoleApp\CLI.ChartingSystem.csproj", "{032A3D8F-7D3B-41E8-8C98-C0703C071114}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{032A3D8F-7D3B-41E8-8C98-C0703C071114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{032A3D8F-7D3B-41E8-8C98-C0703C071114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{032A3D8F-7D3B-41E8-8C98-C0703C071114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{032A3D8F-7D3B-41E8-8C98-C0703C071114}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92C602CD-2329-4803-A3B5-51BF5754883A}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Profile 1": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\School\\University (FSU)\\Fall 2025\\COP 4870\\repos\\HC_ConsoleApp\\HC_ConsoleApp\\"
+    }
+  }
+}
