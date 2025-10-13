@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HC_ConsoleApp.Models
+namespace Library.ChartingSystem.Models
 {
     public class Physician
     {

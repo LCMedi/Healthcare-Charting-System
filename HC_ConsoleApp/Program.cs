@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
-using HC_ConsoleApp.Models;
+using Library.ChartingSystem.Models;
 
-namespace HC_ConsoleApp
+namespace CLI.ChartingSystem
 {
     internal class Program
     {
@@ -31,7 +31,7 @@ namespace HC_ConsoleApp
         // Display add options submenu
         public static void DisplayAddOptions(ChartManager manager)
         {
-            string input = "";
+            string? input = "";
             Console.WriteLine("What would you like to add?\n" +
                 "\tP: Add Patient\n" +
                 "\tH: Add Physician\n" +
@@ -62,7 +62,7 @@ namespace HC_ConsoleApp
         // Display show options submenu
         public static void DisplayShowOptions(ChartManager manager)
         {
-            string input = "";
+            string? input = "";
             Console.WriteLine("What would you like to show?\n" +
                 "\tP: Show Patients\n" +
                 "\tH: Show Physicians\n" +
@@ -99,7 +99,7 @@ namespace HC_ConsoleApp
         // Display update options submenu
         public static void DisplayUpdateOptions(ChartManager manager)
         {
-            string input = "";
+            string? input = "";
             Console.WriteLine("What would you like to update?\n" +
                 "\tP: Update Patient\n" +
                 "\tH: Update Physician\n" +
@@ -130,7 +130,7 @@ namespace HC_ConsoleApp
         // Display delete options submenu
         public static void DisplayDeleteOptions(ChartManager manager)
         {
-            string input = "";
+            string? input = "";
             Console.WriteLine("What would you like to delete?\n" +
                 "\tP: Delete Patient\n" +
                 "\tH: Delete Physician\n" +
@@ -162,7 +162,7 @@ namespace HC_ConsoleApp
         public static void AddPatient(ChartManager manager)
         {
             Console.WriteLine("Enter patient name:");
-            string name = Console.ReadLine();
+            string? name = Console.ReadLine();
             while (string.IsNullOrEmpty(name))
             {
                 Console.WriteLine("Name cannot be empty. Please enter again:");
@@ -182,7 +182,7 @@ namespace HC_ConsoleApp
                 "\t C: White\n" +
                 "\t D: Hispanic\n" +
                 "\t E: Other\n");
-            string raceInput = Console.ReadLine().ToUpper();
+            string? raceInput = Console.ReadLine()?.ToUpper();
             // Replace the incomplete switch expression for RACE with an exhaustive one
             RACE race = raceInput switch
             {
@@ -198,7 +198,7 @@ namespace HC_ConsoleApp
                 "\t M: Male\n" +
                 "\t F: Female\n" +
                 "\t O: Other\n");
-            string genderInput = Console.ReadLine().ToUpper();
+            string? genderInput = Console.ReadLine()?.ToUpper();
             GENDER gender = genderInput switch
             {
                 "M" => GENDER.Male,
@@ -207,7 +207,7 @@ namespace HC_ConsoleApp
                 _ => GENDER.Other
             };
             Console.WriteLine("Enter patient address (optional):");
-            string address = Console.ReadLine();
+            string? address = Console.ReadLine();
             try
             {
                 manager.AddPatient(new Patient(name, birthdate, race, gender, address));
@@ -223,7 +223,7 @@ namespace HC_ConsoleApp
         public static void AddPhysician(ChartManager manager)
         {
             Console.WriteLine("Enter physician name:");
-            string name = Console.ReadLine();
+            string? name = Console.ReadLine();
             while (string.IsNullOrEmpty(name))
             {
                 Console.WriteLine("Name cannot be empty. Please enter again:");
@@ -231,7 +231,7 @@ namespace HC_ConsoleApp
             }
 
             Console.WriteLine("Enter physician license number:");
-            string licenseNumber = Console.ReadLine();
+            string? licenseNumber = Console.ReadLine();
             while (string.IsNullOrEmpty(licenseNumber))
             {
                 Console.WriteLine("License number cannot be empty. Please enter again:");
@@ -246,7 +246,7 @@ namespace HC_ConsoleApp
             }
 
             List<string> specializations = new List<string>();
-            string specInput = "";
+            string? specInput = "";
             do
             {
                 Console.WriteLine("Enter a specialization (or type 'done' to finish):");
@@ -255,7 +255,7 @@ namespace HC_ConsoleApp
                 {
                     specializations.Add(specInput);
                 }
-            } while (specInput.ToLower() != "done");
+            } while (specInput?.ToLower() != "done");
 
             try
             {
@@ -509,7 +509,7 @@ namespace HC_ConsoleApp
             var patient = manager.GetPatient(patId);
 
             Console.WriteLine("Enter new name or leave empty for no change:");
-            string name = Console.ReadLine();
+            string? name = Console.ReadLine();
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -525,7 +525,7 @@ namespace HC_ConsoleApp
             }
 
             Console.WriteLine("Enter new address or leave empty for no change:");
-            string address = Console.ReadLine();
+            string? address = Console.ReadLine();
             if (!string.IsNullOrEmpty(address))
             {
                 patient.SetAddress(address);
@@ -533,7 +533,7 @@ namespace HC_ConsoleApp
             }
 
             Console.WriteLine("Enter new birthdate (MM/DD/YYYY) or leave empty for no change:");
-            string birthdateInput = Console.ReadLine();
+            string? birthdateInput = Console.ReadLine();
             if (!string.IsNullOrEmpty(birthdateInput))
             {
                 DateTime birthdate;
@@ -559,7 +559,7 @@ namespace HC_ConsoleApp
                 "\t C: White\n" +
                 "\t D: Hispanic\n" +
                 "\t E: Other\n");
-            string raceInput = Console.ReadLine().ToUpper();
+            string? raceInput = Console.ReadLine()?.ToUpper();
             if (!string.IsNullOrEmpty(raceInput))
             {
                 RACE race = raceInput switch
@@ -585,7 +585,7 @@ namespace HC_ConsoleApp
                 "\t M: Male\n" +
                 "\t F: Female\n" +
                 "\t O: Other\n");
-            string genderInput = Console.ReadLine().ToUpper();
+            string? genderInput = Console.ReadLine()?.ToUpper();
             if (!string.IsNullOrEmpty(genderInput))
             {
                 GENDER gender = genderInput switch
@@ -605,11 +605,11 @@ namespace HC_ConsoleApp
                 }
             }
 
-            string noteInput = "";
+            string? noteInput = "";
             do
             {
                 Console.WriteLine("Do you wish to add a medical note? Type 'Y' or 'N':");
-                noteInput = Console.ReadLine().ToUpper();
+                noteInput = Console.ReadLine()?.ToUpper();
                 if (noteInput == "Y")
                 {
                     Console.WriteLine("Enter creation date in MM/DD/YYYY format: ");
@@ -619,7 +619,7 @@ namespace HC_ConsoleApp
                         Console.WriteLine("Invalid date format. Please enter again (MM/DD/YYYY):");
                     }
                     Console.WriteLine("Enter diagnosis:");
-                    string diagnosis = Console.ReadLine();
+                    string? diagnosis = Console.ReadLine();
 
                     while (string.IsNullOrEmpty(diagnosis))
                     {
@@ -628,7 +628,7 @@ namespace HC_ConsoleApp
                     }
 
                     Console.WriteLine("Enter prescription:");
-                    string prescription = Console.ReadLine();
+                    string? prescription = Console.ReadLine();
 
                     while (string.IsNullOrEmpty(prescription))
                     {
@@ -669,7 +669,7 @@ namespace HC_ConsoleApp
                         Console.WriteLine($"Error: {ex.Message}");
                     }
                 }
-            } while (noteInput.ToUpper() != "N");
+            } while (noteInput?.ToUpper() != "N");
             Console.WriteLine("Patient updated succesfully");
         }
 
@@ -706,7 +706,7 @@ namespace HC_ConsoleApp
             var physician = manager.GetPhysician(phyId);
 
             Console.WriteLine("Enter new name or leave empty for no change:");
-            string name = Console.ReadLine();
+            string? name = Console.ReadLine();
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -722,7 +722,7 @@ namespace HC_ConsoleApp
             }
 
             Console.WriteLine("Enter new license number or leave empty for no change:");
-            string licenseNumber = Console.ReadLine();
+            string? licenseNumber = Console.ReadLine();
 
             if (!string.IsNullOrEmpty(licenseNumber))
             {
@@ -738,7 +738,7 @@ namespace HC_ConsoleApp
             }
 
             Console.WriteLine("Enter new graduation date (MM/DD/YYYY) or leave empty for no change:");
-            string gradDateInput = Console.ReadLine();
+            string? gradDateInput = Console.ReadLine();
             if (!string.IsNullOrEmpty(gradDateInput))
             {
                 DateTime gradDate;
@@ -759,19 +759,19 @@ namespace HC_ConsoleApp
                 }
             }
 
-            string specInput = "";
+            string? specInput = "";
             do
             {
                 Console.WriteLine("To update specializations:\n" +
                 "\t A: Add specialization\n" +
                 "\t D: Delete specialization\n" +
                 "\t Q: Quit\n");
-                specInput = Console.ReadLine().ToUpper();
+                specInput = Console.ReadLine()?.ToUpper();
                 switch (specInput)
                 {
                     case "A":
                         Console.WriteLine("Enter specialization to add:");
-                        string addSpec = Console.ReadLine();
+                        string? addSpec = Console.ReadLine();
                         if (!string.IsNullOrEmpty(addSpec))
                         {
                             physician.AddSpecialization(addSpec);
@@ -793,7 +793,7 @@ namespace HC_ConsoleApp
                         foreach (var spec in physician.Specializations)
                             Console.WriteLine($"\t- {spec}");
 
-                        string delSpec = Console.ReadLine();
+                        string? delSpec = Console.ReadLine();
                         if (!string.IsNullOrEmpty(delSpec))
                         {
                             try
@@ -873,7 +873,7 @@ namespace HC_ConsoleApp
         static void Main(string[] args)
         {
             var chartManager = new ChartManager();
-            string input = "";
+            string? input = "";
 
             do
             {
