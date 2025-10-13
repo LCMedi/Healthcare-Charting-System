@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace HC_ConsoleApp.Models
+namespace Library.ChartingSystem.Models
 {   
     public enum RACE
     {
@@ -37,13 +37,13 @@ namespace HC_ConsoleApp.Models
         public GENDER Gender { get; private set; }
         public List<MedicalNote> MedicalHistory { get; private set; }
 
-        public Patient(string name, DateTime date, RACE race, GENDER gender, string address = "")
+        public Patient(string name, DateTime date, RACE race, GENDER gender, string? address)
         {
             SetName(name);
             SetBirthdate(date);
             SetRace(race);
             SetGender(gender);
-            SetAddress(address);
+            SetAddress(address ?? string.Empty);
 
             this.Id = idCounter++;
             this.MedicalHistory = [];
