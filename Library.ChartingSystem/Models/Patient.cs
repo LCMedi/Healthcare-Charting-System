@@ -30,12 +30,16 @@ namespace Library.ChartingSystem.Models
         public static int idCounter = 1;
 
         public int Id { get; private set; }
-        public string Name { get; private set; } = string.Empty;
-        public string Address { get; private set; } = string.Empty;
-        public DateTime Birthdate { get; private set; }
-        public RACE Race { get; private set; }
-        public GENDER Gender { get; private set; }
-        public List<MedicalNote> MedicalHistory { get; private set; }
+        public string? Name { get; private set; } = string.Empty;
+        public string? Address { get; private set; } = string.Empty;
+        public DateTime? Birthdate { get; private set; }
+        public RACE? Race { get; private set; }
+        public GENDER? Gender { get; private set; }
+        public List<MedicalNote>? MedicalHistory { get; private set; }
+
+        public Patient()
+        {
+        }
 
         public Patient(string name, DateTime date, RACE race, GENDER gender, string? address)
         {
