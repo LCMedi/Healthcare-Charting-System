@@ -10,10 +10,14 @@ namespace Library.ChartingSystem.Models
     {
         public static int idCounter = 1;
         public int Id { get; private set; }
-        public string Name { get; private set; } = string.Empty;
-        public string LicenseNumber { get; private set; } = string.Empty;
-        public DateTime graduationDate { get; private set; }
-        public List<string> Specializations { get; private set; }
+        public string? Name { get; private set; } = string.Empty;
+        public string? LicenseNumber { get; private set; } = string.Empty;
+        public DateTime? graduationDate { get; private set; }
+        public List<string>? Specializations { get; private set; }
+
+        public Physician()
+        {
+        }
 
         // Constructor
         public Physician(string name, string licenseNumber, DateTime date, List<string> specializations)

@@ -8,9 +8,16 @@ namespace Library.ChartingSystem.Models
 {
     public class ChartManager
     {
-        public List<Appointment> Appointments { get; private set; } = new List<Appointment>();
-        public List<Patient> Patients { get; private set; } = new List<Patient>();
-        public List<Physician> Physicians { get; private set; } = new List<Physician>();
+        public List<Appointment> Appointments { get; private set; }
+        public List<Patient> Patients { get; private set; }
+        public List<Physician> Physicians { get; private set; }
+
+        public ChartManager()
+        {
+            Appointments = new List<Appointment>();
+            Patients = new List<Patient>();
+            Physicians = new List<Physician>();
+        }
 
         // Create Patient
         public void AddPatient(Patient patient)
@@ -158,17 +165,12 @@ namespace Library.ChartingSystem.Models
         }
 
         // Get Appointment by ID
-        public Appointment GetAppointment(int id)
+        public Appointment? GetAppointment(int id)
         {
             if (id <= 0)
                 throw new ArgumentException("ID cannot be negative or zero.");
 
-            var appointment = Appointments.FirstOrDefault(x => x.Id == id);
-
-            if (appointment == null)
-                throw new ArgumentException($"No appointment found with ID {id}.");
-
-            return appointment;
+            return Appointments.FirstOrDefault(x => x.Id == id);
         }
 
         // Get All Appointments by Patient
@@ -178,7 +180,7 @@ namespace Library.ChartingSystem.Models
                 throw new ArgumentException("Patient cannot be empty.");
 
             if (!Patients.Contains(patient))
-                throw new ArgumentException("Patient not found in the system.");
+                return new List<Appointment>();
 
             return Appointments.Where(x => x.Patient == patient).ToList();
         }
@@ -190,7 +192,7 @@ namespace Library.ChartingSystem.Models
                 throw new ArgumentException("Physician cannot be empty.");
 
             if (!Physicians.Contains(physician))
-                throw new ArgumentException("Physician not found in the system.");
+                return new List<Appointment>();
 
             return Appointments.Where(x => x.Physician == physician).ToList();
         }
@@ -198,83 +200,54 @@ namespace Library.ChartingSystem.Models
         // Get All Appointments (sorted by date)
         public List<Appointment> GetAllAppointments()
         {
-            if (Appointments.Count == 0)
-                return new List<Appointment>();
-
             return Appointments.OrderBy(x => x.AppointmentDate).ToList();
         }
 
         // Get Physician (by ID)
-        public Physician GetPhysician(int id)
+        public Physician? GetPhysician(int id)
         {
             if (id <= 0)
                 throw new ArgumentException("ID cannot be negative or zero.");
 
-            var physician = Physicians.FirstOrDefault(x => x.Id == id);
-
-            if (physician == null)
-                throw new ArgumentException($"No physician found with ID {id}.");
-
-            return physician;
+            return Physicians.FirstOrDefault(x => x.Id == id);
         }
 
         // Get Physician (by Name)
-        public Physician GetPhysician(string name)
+        public Physician? GetPhysician(string name)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Name cannot be empty.");
 
-            var physician = Physicians.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-            if (physician == null)
-                throw new ArgumentException($"No physician found with name {name}.");
-
-            return physician;
+            return Physicians.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         // Get All Physicians
         public List<Physician> GetAllPhysicians()
         {
-            if (Physicians.Count == 0)
-                return new List<Physician>();
-
             return Physicians;
         }
 
         // Get Patient (by ID)
-        public Patient GetPatient(int id)
+        public Patient? GetPatient(int id)
         {
             if (id <= 0)
                 throw new ArgumentException("ID cannot be negative or zero.");
 
-            var patient = Patients.FirstOrDefault(x => x.Id == id);
-
-            if (patient == null)
-                throw new ArgumentException($"No patient found with ID {id}.");
-
-            return patient;
+            return Patients.FirstOrDefault(x => x.Id == id);
         }
 
         // Get Patient (by Name)
-        public Patient GetPatient(string name)
+        public Patient? GetPatient(string name)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Name cannot be empty.");
 
-            var patient = Patients.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-            if (patient == null)
-                throw new ArgumentException($"No patient found with name {name}.");
-
-            return patient;
+            return Patients.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         // Get All Patients
         public List<Patient> GetAllPatients()
         {
-            if (Patients.Count == 0)
-                return new List<Patient>();
-
             return Patients;
         }
 
