@@ -35,7 +35,7 @@ namespace Library.ChartingSystem.Models
         public DateTime? Birthdate { get; private set; }
         public RACE? Race { get; private set; }
         public GENDER? Gender { get; private set; }
-        public List<MedicalNote>? MedicalHistory { get; private set; }
+        public List<MedicalNote> MedicalHistory { get; private set; } = new();
 
         public Patient()
         {
@@ -50,7 +50,7 @@ namespace Library.ChartingSystem.Models
             SetAddress(address ?? string.Empty);
 
             this.Id = idCounter++;
-            this.MedicalHistory = [];
+            this.MedicalHistory = new List<MedicalNote>();
         }
 
         public void SetName(string name)
@@ -100,13 +100,16 @@ namespace Library.ChartingSystem.Models
             if (string.IsNullOrWhiteSpace(prescription))
                 throw new ArgumentException("Prescription cannot be empty.");
 
+            if (physician == null)
+                throw new ArgumentException("Physician cannot be null.");
+
             MedicalHistory.Add(new MedicalNote(time, diagnosis, prescription, physician));
         }
 
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"[{Id}]\t{Name}\t{Gender}\t\t{Birthdate:MM/dd/yyyy}\t{Race}\t\t{Address}");
+            sb.AppendLine($"[{Id}]\t{Name ?? "N/A"}\t{Gender?.ToString() ?? "N/A"}\t\t{Birthdate:MM/dd/yyyy}\t{Race?.ToString() ?? "N/A"}\t\t{Address ?? "N/A"}");
 
             if (MedicalHistory != null && MedicalHistory.Count > 0)
             {
@@ -114,7 +117,7 @@ namespace Library.ChartingSystem.Models
                 foreach (var note in MedicalHistory)
                 {
                     sb.Append('\t');
-                    sb.AppendLine(note.ToString());
+                    sb.AppendLine(note?.ToString() ?? "N/A");
                 }
             }
             else

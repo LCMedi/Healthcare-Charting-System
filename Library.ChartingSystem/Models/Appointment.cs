@@ -10,10 +10,10 @@ namespace Library.ChartingSystem.Models
     {
         public static int idCounter = 1;
         public int Id { get; private set; }
-        public Patient? Patient { get; private set; }
-        public Physician? Physician { get; private set; }
+        public Patient Patient { get; private set; }
+        public Physician Physician { get; private set; }
 
-        public DateTime? AppointmentDate { get; private set; }
+        public DateTime AppointmentDate { get; private set; } = DateTime.Now;
         public DateTime EndTime => AppointmentDate.AddMinutes(30);
 
         public Appointment(Patient patient, Physician physician, DateTime date)
@@ -55,7 +55,10 @@ namespace Library.ChartingSystem.Models
 
         public override string ToString()
         {
-            return $"{Id}\t{Physician.Name}\t{Patient.Name}\t{AppointmentDate:g} : {EndTime:g}";
+            // Use null-conditional and null-coalescing operators to avoid null dereference warnings
+            var physicianName = Physician?.Name ?? "N/A";
+            var patientName = Patient?.Name ?? "N/A";
+            return $"{Id}\t{physicianName}\t{patientName}\t{AppointmentDate:g} : {EndTime:g}";
         }
     }
 }

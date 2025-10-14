@@ -66,12 +66,11 @@ namespace Library.ChartingSystem.Models
             if (!Appointments.Contains(appointment))
                 throw new ArgumentException("Appointment not found in the system.");
 
-            var newAppointment = appointment;
-            newAppointment.SetAppointmentDate(newTime);
+            appointment.SetAppointmentDate(newTime);
 
             CancelAppointment(appointment);
 
-            ScheduleAppointment(newAppointment);    // Error checking is done inside ScheduleAppointment()
+            ScheduleAppointment(appointment);    // Error checking is done inside ScheduleAppointment()
         }
 
         // Update Physician (Add Specializations only)
@@ -256,8 +255,10 @@ namespace Library.ChartingSystem.Models
         {
             var physician = appointment.Physician;
 
+            if (physician == null)
+                return false;
+
             return Appointments.Any(x => x.Physician == physician && x.AppointmentDate < appointment.EndTime && appointment.AppointmentDate < x.EndTime);
-            
         }
 
     }

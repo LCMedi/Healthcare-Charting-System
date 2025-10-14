@@ -13,7 +13,7 @@ namespace Library.ChartingSystem.Models
         public string? Name { get; private set; } = string.Empty;
         public string? LicenseNumber { get; private set; } = string.Empty;
         public DateTime? graduationDate { get; private set; }
-        public List<string>? Specializations { get; private set; }
+        public List<string> Specializations { get; private set; } = new();
 
         public Physician()
         {
@@ -79,8 +79,8 @@ namespace Library.ChartingSystem.Models
 
         public override string ToString()
         {
-            string specs = Specializations.Count > 0 ? string.Join(", ", Specializations) : "None";
-            return $"[{Id}]\t{Name}\t{LicenseNumber}\t\t\t{specs}";
+            string specs = (Specializations != null && Specializations.Count > 0) ? string.Join(", ", Specializations) : "None";
+            return $"[{Id}]\t{Name ?? "N/A"}\t{LicenseNumber ?? "N/A"}\t\t\t{specs}";
         }
     }
 }
