@@ -1,18 +1,32 @@
-﻿using System;
+﻿using Library.ChartingSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.ChartingSystem.Models
+namespace Library.ChartingSystem.Services
 {
-    public class ChartManager
+    public class ChartServiceProxy
     {
-        public List<Appointment> Appointments { get; private set; }
-        public List<Patient> Patients { get; private set; }
-        public List<Physician> Physicians { get; private set; }
+        private List<Appointment> Appointments;
+        private List<Patient> Patients;
+        private List<Physician> Physicians;
 
-        public ChartManager()
+        private static ChartServiceProxy? instance;
+        public static ChartServiceProxy Current
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ChartServiceProxy();
+                }
+                return instance;
+            }
+        }
+
+        private ChartServiceProxy()
         {
             Appointments = new List<Appointment>();
             Patients = new List<Patient>();
@@ -20,23 +34,27 @@ namespace Library.ChartingSystem.Models
         }
 
         // Create Patient
-        public void AddPatient(Patient patient)
+        public Patient AddPatient(Patient patient)
         {
             if (patient == null)
                 throw new ArgumentException("Patient cannot be empty.");
+
             Patients.Add(patient);
+            return patient;
         }
 
         // Create Physician
-        public void AddPhysician(Physician physician)
+        public Physician AddPhysician(Physician physician)
         {
             if (physician == null)
                 throw new ArgumentException("Physician cannot be empty.");
+
             Physicians.Add(physician);
+            return physician;
         }
 
         // Create Appointment
-        public void ScheduleAppointment(Appointment appointment)
+        public Appointment ScheduleAppointment(Appointment appointment)
         {
             if (appointment == null)
                 throw new ArgumentException("Appointment cannot be empty.");
@@ -55,10 +73,11 @@ namespace Library.ChartingSystem.Models
                 throw new ArgumentException("There already exists an appointment with the given time.");
 
             Appointments.Add(appointment);
+            return appointment;
         }
 
         // Update Appointment
-        public void RescheduleAppointment(Appointment appointment, DateTime newTime)
+        public Appointment RescheduleAppointment(Appointment appointment, DateTime newTime)
         {
             if (appointment == null)
                 throw new ArgumentException("Appointment cannot be empty.");
@@ -70,7 +89,7 @@ namespace Library.ChartingSystem.Models
 
             CancelAppointment(appointment);
 
-            ScheduleAppointment(appointment);    // Error checking is done inside ScheduleAppointment()
+            return ScheduleAppointment(appointment);    // Error checking is done inside ScheduleAppointment()
         }
 
         // Update Physician (Add Specializations only)
@@ -116,7 +135,7 @@ namespace Library.ChartingSystem.Models
         }
 
         // Delete Appointment
-        public void CancelAppointment(Appointment appointment)
+        public bool CancelAppointment(Appointment appointment)
         {
             if (appointment == null)
                 throw new ArgumentException("Appointment cannot be empty.");
@@ -124,11 +143,11 @@ namespace Library.ChartingSystem.Models
             if (!Appointments.Contains(appointment))
                 throw new ArgumentException("Appointment not found in the system.");
 
-            Appointments.Remove(appointment);
+            return Appointments.Remove(appointment);
         }
 
         // Delete Physician
-        public void RemovePhysician(Physician physician)
+        public bool RemovePhysician(Physician physician)
         {
             if (physician == null)
                 throw new ArgumentException("Physician cannot be empty.");
@@ -142,11 +161,11 @@ namespace Library.ChartingSystem.Models
             foreach (var appointment in appointments)
                 Appointments.Remove(appointment);
 
-            Physicians.Remove(physician);
+            return Physicians.Remove(physician);
         }
 
         // Delete Patient
-        public void RemovePatient(Patient patient)
+        public bool RemovePatient(Patient patient)
         {
             if (patient == null)
                 throw new ArgumentException("Patient cannot be empty.");
@@ -160,7 +179,7 @@ namespace Library.ChartingSystem.Models
             foreach (var appointment in appointments)
                 Appointments.Remove(appointment);
 
-            Patients.Remove(patient);
+            return Patients.Remove(patient);
         }
 
         // Get Appointment by ID

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Library.ChartingSystem.Models;
+using Library.ChartingSystem.Services;
 
 namespace CLI.ChartingSystem
 {
@@ -29,7 +30,7 @@ namespace CLI.ChartingSystem
         }
 
         // Display add options submenu
-        public static void DisplayAddOptions(ChartManager manager)
+        public static void DisplayAddOptions(ChartServiceProxy manager)
         {
             string? input = "";
             Console.WriteLine("What would you like to add?\n" +
@@ -60,7 +61,7 @@ namespace CLI.ChartingSystem
         }
 
         // Display show options submenu
-        public static void DisplayShowOptions(ChartManager manager)
+        public static void DisplayShowOptions(ChartServiceProxy manager)
         {
             string? input = "";
             Console.WriteLine("What would you like to show?\n" +
@@ -97,7 +98,7 @@ namespace CLI.ChartingSystem
         }
 
         // Display update options submenu
-        public static void DisplayUpdateOptions(ChartManager manager)
+        public static void DisplayUpdateOptions(ChartServiceProxy manager)
         {
             string? input = "";
             Console.WriteLine("What would you like to update?\n" +
@@ -128,7 +129,7 @@ namespace CLI.ChartingSystem
         }
 
         // Display delete options submenu
-        public static void DisplayDeleteOptions(ChartManager manager)
+        public static void DisplayDeleteOptions(ChartServiceProxy manager)
         {
             string? input = "";
             Console.WriteLine("What would you like to delete?\n" +
@@ -159,7 +160,7 @@ namespace CLI.ChartingSystem
         }
 
         // Add Patient
-        public static void AddPatient(ChartManager manager)
+        public static void AddPatient(ChartServiceProxy manager)
         {
             Console.WriteLine("Enter patient name:");
             string? name = Console.ReadLine();
@@ -220,7 +221,7 @@ namespace CLI.ChartingSystem
         }
 
         // Add Physician
-        public static void AddPhysician(ChartManager manager)
+        public static void AddPhysician(ChartServiceProxy manager)
         {
             Console.WriteLine("Enter physician name:");
             string? name = Console.ReadLine();
@@ -269,7 +270,7 @@ namespace CLI.ChartingSystem
         }
 
         // Add Appointment
-        public static void AddAppointment(ChartManager manager)
+        public static void AddAppointment(ChartServiceProxy manager)
         {
             if (manager.GetAllPhysicians().Count == 0)
             {
@@ -346,7 +347,7 @@ namespace CLI.ChartingSystem
         }
 
         // Delete Patient
-        public static void DeletePatient(ChartManager manager)
+        public static void DeletePatient(ChartServiceProxy manager)
         {
             if (manager.GetAllPatients().Count == 0)
             {
@@ -389,7 +390,7 @@ namespace CLI.ChartingSystem
         }
 
         // Delete Physician
-        public static void DeletePhysician(ChartManager manager)
+        public static void DeletePhysician(ChartServiceProxy manager)
         {
             if (manager.GetAllPhysicians().Count == 0)
             {
@@ -432,7 +433,7 @@ namespace CLI.ChartingSystem
         }
 
         // Delete Appointment
-        public static void DeleteAppointment(ChartManager manager)
+        public static void DeleteAppointment(ChartServiceProxy manager)
         {
             if (manager.GetAllAppointments().Count == 0)
             {
@@ -476,7 +477,7 @@ namespace CLI.ChartingSystem
         }
 
         // Update Patient
-        public static void UpdatePatient(ChartManager manager)
+        public static void UpdatePatient(ChartServiceProxy manager)
         {
             if (manager.GetAllPatients().Count == 0)
             {
@@ -674,7 +675,7 @@ namespace CLI.ChartingSystem
         }
 
         // Update Physician
-        public static void UpdatePhysician(ChartManager manager)
+        public static void UpdatePhysician(ChartServiceProxy manager)
         {
             if (manager.GetAllPhysicians().Count == 0)
             {
@@ -822,7 +823,7 @@ namespace CLI.ChartingSystem
         }
 
         // Reschedule Appointment
-        public static void RescheduleAppointment(ChartManager manager)
+        public static void RescheduleAppointment(ChartServiceProxy manager)
         {
             if (manager.GetAllAppointments().Count == 0)
             {
@@ -872,7 +873,7 @@ namespace CLI.ChartingSystem
         }
         static void Main(string[] args)
         {
-            var chartManager = new ChartManager();
+            var chartManager = new ChartServiceProxy();
             string? input = "";
 
             do
