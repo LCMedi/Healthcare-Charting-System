@@ -67,42 +67,6 @@ namespace Library.ChartingSystem.Models
             ScheduleAppointment(newAppointment);    // Error checking is done inside ScheduleAppointment()
         }
 
-        // Update Physician (Name only for simplicity)
-        public void UpdatePhysicianName(Physician physician, string name)
-        {
-            if (physician == null)
-                throw new ArgumentNullException("Physician cannot be empty.");
-
-            if (!Physicians.Contains(physician))
-                throw new ArgumentException("Physician not found in the system.");
-
-            physician.SetName(name);
-        }
-
-        // Update Physician (LicenseNumber only)
-        public void UpdatePhysicianLicenseNumber(Physician physician, string licenseNumber)
-        {
-            if (physician == null)
-                throw new ArgumentNullException("Physician cannot be empty.");
-
-            if (!Physicians.Contains(physician))
-                throw new ArgumentException("Physician not found in the system.");
-
-            physician.SetLicenseNumber(licenseNumber);
-        }
-
-        // Update Physician (GraduationDate only)
-        public void UpdatePhysicianGraduationDate(Physician physician, DateTime graduationDate)
-        {
-            if (physician == null)
-                throw new ArgumentNullException("Physician cannot be empty.");
-
-            if (!Physicians.Contains(physician))
-                throw new ArgumentException("Physician not found in the system.");
-
-            physician.SetGraduationDate(graduationDate);
-        }
-
         // Update Physician (Add Specializations only)
         public void AddPhysicianSpecialization(Physician physician, string specialization)
         {
@@ -125,66 +89,6 @@ namespace Library.ChartingSystem.Models
                 throw new ArgumentException("Physician not found in the system.");
 
             physician.RemoveSpecialization(specialization);
-        }
-
-        // Update Patient (Name only for simplicity)
-        public void UpdatePatientName(Patient patient, string name)
-        {
-            if (patient == null)
-                throw new ArgumentNullException("Patient cannot be empty.");
-
-            if (!Patients.Contains(patient))
-                throw new ArgumentException("Patient not found in the system.");
-
-            patient.SetName(name);
-        }
-
-        // Update Patient (Address only)
-        public void UpdatePatientAddress(Patient patient, string address)
-        {
-            if (patient == null)
-                throw new ArgumentNullException("Patient cannot be empty.");
-
-            if (!Patients.Contains(patient))
-                throw new ArgumentException("Patient not found in the system.");
-
-            patient.SetAddress(address);
-        }
-
-        // Update Patient (Birthdate only)
-        public void UpdatePatientBirthdate(Patient patient, DateTime birthdate)
-        {
-            if (patient == null)
-                throw new ArgumentNullException("Patient cannot be empty.");
-
-            if (!Patients.Contains(patient))
-                throw new ArgumentException("Patient not found in the system.");
-
-            patient.SetBirthdate(birthdate);
-        }
-
-        // Update Patient (Race only)
-        public void UpdatePatientRace(Patient patient, RACE race)
-        {
-            if (patient == null)
-                throw new ArgumentNullException("Patient cannot be empty.");
-
-            if (!Patients.Contains(patient))
-                throw new ArgumentException("Patient not found in the system.");
-
-            patient.SetRace(race);
-        }
-
-        // Update Patient (Gender only)
-        public void UpdatePatientGender(Patient patient, GENDER gender)
-        {
-            if (patient == null)
-                throw new ArgumentNullException("Patient cannot be empty.");
-
-            if (!Patients.Contains(patient))
-                throw new ArgumentException("Patient not found in the system.");
-
-            patient.SetGender(gender);
         }
 
         // Update Patient (Add Medical Note only)
