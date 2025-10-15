@@ -5,10 +5,10 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="10">
             <Label Text="Name" FontSize="24" HorizontalOptions="Center"/>
-            <Entry Placeholder="Name" Text="{Binding Name}"/>
+            <Entry Placeholder="'John Smith'" Text="{Binding Name}"/>
             
             <Label Text="Address"/>
-            <Entry Placeholder="Address" Text="{Binding Address}"/>
+            <Entry Placeholder="'123 Main St'" Text="{Binding Address}"/>
             
             <Label Text="Birthdate"/>
             <DatePicker Date="{Binding Birthdate}"/>
@@ -24,6 +24,42 @@
                 Title="Gender"
                 ItemsSource="{Binding Genders}"
                 SelectedItem="{Binding SelectedGender}"/>
+
+            <Label Text="Medical History" FontSize="24" HorizontalOptions="Center"/>
+            <VerticalStackLayout>
+            <Grid ColumnSpacing="10" RowSpacing="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <!-- <ColumnDefinition Width="2*"/> -->
+                </Grid.ColumnDefinitions>
+                <!-- Header Row -->
+                <Label Text="Date Created" Grid.Row="0" Grid.Column="0" HorizontalOptions="Center"/>
+                <Label Text="Diagnosis" Grid.Row="0" Grid.Column="1" HorizontalOptions="Center"/>
+                <Label Text="Prescription" Grid.Row="0" Grid.Column="2" HorizontalOptions="Center"/>
+                <!-- <Label Text="Physician" Grid.Row="0" Grid.Column="3" HorizontalOptions="Center"/> -->
+                <!-- Entry Row -->
+                <DatePicker Date="{Binding NewNoteDate}" Grid.Row="1" Grid.Column="0" HorizontalOptions="Center"/>
+                <Entry Placeholder="Diagnosis" Text="{Binding NewDiagnosis}" Grid.Row="1" Grid.Column="1"/>
+                <Entry Placeholder="Prescription" Text="{Binding NewPrescription}" Grid.Row="1" Grid.Column="2"/>
+                <!-- <Picker Title="Race" ItemsSource="{Binding Physicians}" SelectedItem="{Binding SelectedPhysician}"/> -->
+                </Grid>
+            <!-- Physician is hardcoded. Add a Picker for physicians later on. -->
+            <Button Text="Add Note" Command="{Binding AddMedicalNoteCommand}" />
+            </VerticalStackLayout>
+            <CollectionView ItemsSource="{Binding MedicalNotes}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding Display}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
             
             <Button Text="OK" Clicked="OkClicked"/>
             <Button Text="Cancel" Clicked="CancelClicked"/>

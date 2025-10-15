@@ -39,6 +39,13 @@ namespace Library.ChartingSystem.Models
 
         public Patient()
         {
+            this.Id = idCounter++;
+            this.Name = string.Empty;
+            this.Address = string.Empty;
+            this.Birthdate = null;
+            this.Race = null;
+            this.Gender = null;
+            this.MedicalHistory = new List<MedicalNote>();
         }
 
         public Patient(string name, DateTime date, RACE race, GENDER gender, string? address)
@@ -104,6 +111,14 @@ namespace Library.ChartingSystem.Models
                 throw new ArgumentException("Physician cannot be null.");
 
             MedicalHistory.Add(new MedicalNote(time, diagnosis, prescription, physician));
+        }
+
+        public string Display
+        {
+            get
+            {
+                return ToString();
+            }
         }
 
         public override string ToString()

@@ -4,11 +4,16 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MAUI.ChartingSystem"
+    xmlns:view="clr-namespace:MAUI.ChartingSystem.Views"
     Title="MAUI.ChartingSystem">
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
-
+    <ShellContent
+        Title="PatientDetail"
+        ContentTemplate="{DataTemplate view:PatientView}"
+        Route="Patient" />
+    
 </Shell>
