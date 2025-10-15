@@ -16,5 +16,15 @@ namespace MAUI.ChartingSystem
         {
 
         }
+
+        private void EditClicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DeleteClicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }

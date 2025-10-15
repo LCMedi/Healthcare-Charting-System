@@ -1,0 +1,32 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.ChartingSystem.Views.PatientView"
+             Title="PatientView">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+            <Label Text="Name" FontSize="24" HorizontalOptions="Center"/>
+            <Entry Placeholder="Name" Text="{Binding Name}"/>
+            
+            <Label Text="Address"/>
+            <Entry Placeholder="Address" Text="{Binding Address}"/>
+            
+            <Label Text="Birthdate"/>
+            <DatePicker Date="{Binding Birthdate}"/>
+            
+            <Label Text="Select Race"/>
+            <Picker
+                    Title="Race"
+                    ItemsSource="{Binding Races}"
+                    SelectedItem="{Binding SelectedRace}"/>
+
+            <Label Text="Select Gender"/>
+            <Picker
+                Title="Gender"
+                ItemsSource="{Binding Genders}"
+                SelectedItem="{Binding SelectedGender}"/>
+            
+            <Button Text="OK" Clicked="OkClicked"/>
+            <Button Text="Cancel" Clicked="CancelClicked"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
