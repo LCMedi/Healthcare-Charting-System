@@ -58,7 +58,7 @@ namespace Library.ChartingSystem.Models
             // Use null-conditional and null-coalescing operators to avoid null dereference warnings
             var physicianName = Physician?.Name ?? "N/A";
             var patientName = Patient?.Name ?? "N/A";
-            return $"{Id}\t{physicianName}\t{patientName}\t{AppointmentDate:g} : {EndTime:g}";
+            return $"{Id}\t{physicianName}\t\t{patientName}\t{AppointmentDate:g} : {EndTime:g}";
         }
     }
 }
