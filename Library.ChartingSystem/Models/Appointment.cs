@@ -53,6 +53,14 @@ namespace Library.ChartingSystem.Models
             return true;
         }
 
+        public string Display
+        {
+            get
+            {
+                return ToString();
+            }
+        }
+
         public override string ToString()
         {
             // Use null-conditional and null-coalescing operators to avoid null dereference warnings

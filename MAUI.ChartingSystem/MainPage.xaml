@@ -13,8 +13,29 @@
                 SemanticProperties.HeadingLevel="Level1" />
             <ListView
                 ItemsSource="{Binding Appointments}"
-                SelectedItem="{Binding SelectedAppointment}"
-                />
+                SelectedItem="{Binding SelectedAppointment}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Display}" Grid.Column="0"/>
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Clicked="EditClicked" Text="Edit" Grid.Column="0"/>
+                                    <Button Clicked="DeleteClicked" Text="Delete" Grid.Column="1"/>
+                                </Grid>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <Button Text="Add Patient" Clicked="AddPatientClicked"/>
         </VerticalStackLayout>
     </ScrollView>

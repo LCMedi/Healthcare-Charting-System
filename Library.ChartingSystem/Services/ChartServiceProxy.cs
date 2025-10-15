@@ -9,11 +9,28 @@ namespace Library.ChartingSystem.Services
 {
     public class ChartServiceProxy
     {
-        private readonly List<Appointment> Appointments;
-        private readonly List<Patient> Patients;
-        private readonly List<Physician> Physicians;
+        private List<Appointment> Appointments;
+        private List<Patient> Patients;
+        private List<Physician> Physicians;
 
-        public ChartServiceProxy()
+        private static ChartServiceProxy? instance;
+        private static object instanceLock = new object();
+        public static ChartServiceProxy Current
+        {
+            get
+            {
+                lock (instanceLock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new ChartServiceProxy();
+                    }
+                }
+                return instance;
+            }
+        }
+
+        private ChartServiceProxy()
         {
             Appointments = new List<Appointment>();
             Patients = new List<Patient>();
