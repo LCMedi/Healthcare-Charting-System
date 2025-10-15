@@ -24,6 +24,14 @@ namespace Library.ChartingSystem.Models
             this.CreatedBy = physician;
         }
 
+        public string Display
+        {
+            get
+            {
+                return ToString();
+            }
+        }
+
         public override string ToString()
         {
             return $"{DateCreated:MM/dd/yyyy}: Diagnosis: {Diagnosis}, Prescription: {Prescription}, Physician: {CreatedBy?.Name ?? "Unknown"}";
