@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLI.ChartingSystem", "HC_Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.ChartingSystem", "Library.ChartingSystem\Library.ChartingSystem.csproj", "{2561B727-A5BB-4006-ABBB-9F0543D0D036}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAUI.ChartingSystem", "MAUI.ChartingSystem\MAUI.ChartingSystem.csproj", "{0E1A8F1B-49D6-4210-B876-3B1C2BE411FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,11 @@ Global
 		{2561B727-A5BB-4006-ABBB-9F0543D0D036}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2561B727-A5BB-4006-ABBB-9F0543D0D036}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2561B727-A5BB-4006-ABBB-9F0543D0D036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E1A8F1B-49D6-4210-B876-3B1C2BE411FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E1A8F1B-49D6-4210-B876-3B1C2BE411FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E1A8F1B-49D6-4210-B876-3B1C2BE411FF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0E1A8F1B-49D6-4210-B876-3B1C2BE411FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E1A8F1B-49D6-4210-B876-3B1C2BE411FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
