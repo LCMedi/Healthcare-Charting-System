@@ -5,7 +5,7 @@
              NavigatedTo="ContentPage_NavigatedTo">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="10">
-            <Label Text="Name" FontSize="24" HorizontalOptions="Center"/>
+            <Label Text="Name"/>
             <Entry Placeholder="'John Smith'" Text="{Binding Name}"/>
             
             <Label Text="Address"/>

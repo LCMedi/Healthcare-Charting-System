@@ -13,6 +13,7 @@
                 Text="Healthcare Charting Management System"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
+            <Label Text="Patients" FontSize="24" HorizontalOptions="Center"/>
             <ListView
                 ItemsSource="{Binding Patients}"
                 SelectedItem="{Binding SelectedPatient}">
@@ -30,8 +31,60 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <Button Clicked="EditClicked" Text="Edit" Grid.Column="0"/>
-                                    <Button Clicked="DeleteClicked" Text="Delete" Grid.Column="1"/>
+                                    <Button Clicked="EditPatientClicked" Text="Edit" Grid.Column="0"/>
+                                    <Button Clicked="DeletePatientClicked" Text="Delete" Grid.Column="1"/>
+                                </Grid>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Text="Physicians" FontSize="24" HorizontalOptions="Center"/>
+            <ListView
+            ItemsSource="{Binding Physicians}"
+            SelectedItem="{Binding SelectedPhysician}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Display}" Grid.Column="0"/>
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Clicked="EditPhysiciansClicked" Text="Edit" Grid.Column="0"/>
+                                    <Button Clicked="DeletePhysiciansClicked" Text="Delete" Grid.Column="1"/>
+                                </Grid>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Text="Appointments" FontSize="24" HorizontalOptions="Center"/>
+            <ListView
+            ItemsSource="{Binding Appointments}"
+            SelectedItem="{Binding SelectedAppointment}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Display}" Grid.Column="0"/>
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Clicked="EditAppointmentClicked" Text="Edit" Grid.Column="0"/>
+                                    <Button Clicked="DeleteAppointmentClicked" Text="Delete" Grid.Column="1"/>
                                 </Grid>
                             </Grid>
                         </ViewCell>
