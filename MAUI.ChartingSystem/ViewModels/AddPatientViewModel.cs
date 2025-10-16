@@ -132,17 +132,63 @@ public class AddPatientViewModel : INotifyPropertyChanged
 
     public Patient ToPatient()
     {
-        var patient = new Patient();
-        patient.SetName(Name);
-        patient.SetAddress(Address);
-        patient.SetBirthdate(Birthdate);
-        patient.SetRace(SelectedRace);
-        patient.SetGender(SelectedGender);
+        var patient = new Patient(Name, Birthdate, SelectedRace, SelectedGender, Address);
 
         foreach (var note in MedicalNotes)
             patient.MedicalHistory.Add(note);
 
         return patient;
+    }
+
+    public bool TryCreatePatient(out Patient? patient, out string error)
+    {
+        try
+        {
+            patient = ToPatient();
+            error = string.Empty;
+            return true;
+        }
+        catch (ArgumentException ex)
+        {
+            patient = null;
+            error = ex.Message;
+            return false;
+        }
+        catch (Exception ex)
+        {
+            patient = null;
+            error = ex.Message;
+            return false;
+        }
+    }
+
+    public bool TryUpdateExistingPatient(Patient existing, out string error)
+    {
+        try
+        {
+            existing.SetName(Name);
+            existing.SetAddress(Address);
+            existing.SetBirthdate(Birthdate);
+            existing.SetRace(SelectedRace);
+            existing.SetGender(SelectedGender);
+
+            existing.MedicalHistory.Clear();
+            foreach (var note in MedicalNotes)
+                existing.MedicalHistory.Add(note);
+
+            error = string.Empty;
+            return true;
+        }
+        catch (ArgumentException ex)
+        {
+            error = ex.Message;
+            return false;
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+            return false;
+        }
     }
 
     // Reset all fields to defaults
