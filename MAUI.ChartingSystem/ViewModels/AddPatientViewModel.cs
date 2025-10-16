@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using Library.ChartingSystem.Models;
+using Library.ChartingSystem.Services;
 
 namespace MAUI.ChartingSystem.ViewModels;
 
@@ -95,6 +96,28 @@ public class AddPatientViewModel : INotifyPropertyChanged
         AddMedicalNoteCommand = new Command(AddMedicalNote);
     }
 
+    public AddPatientViewModel(int id) : this()
+    {
+        var patient = ChartServiceProxy.Current.GetPatient(id);
+        if (patient is null)
+            return;
+
+        Name = patient.Name ?? string.Empty;
+        Address = patient.Address ?? string.Empty;
+        Birthdate = patient.Birthdate ?? DateTime.Today;
+        SelectedRace = patient.Race ?? Races.FirstOrDefault();
+        SelectedGender = patient.Gender ?? Genders.FirstOrDefault();
+
+        MedicalNotes.Clear();
+        foreach (var note in patient.MedicalHistory)
+            MedicalNotes.Add(note);
+
+        NewNoteDate = DateTime.Today;
+        NewDiagnosis = string.Empty;
+        NewPrescription = string.Empty;
+        NewPhysician = CreateDefaultPhysician();
+    }
+
     public void AddMedicalNote()
     {
         if (!string.IsNullOrWhiteSpace(NewDiagnosis) && !string.IsNullOrWhiteSpace(NewPrescription) && NewPhysician != null)
@@ -103,7 +126,6 @@ public class AddPatientViewModel : INotifyPropertyChanged
             NewNoteDate = DateTime.Today;
             NewDiagnosis = string.Empty;
             NewPrescription = string.Empty;
-            // reset physician to a safe default instance (do not assign null to a non-nullable property)
             NewPhysician = CreateDefaultPhysician();
         }
     }

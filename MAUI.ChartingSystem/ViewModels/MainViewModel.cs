@@ -13,13 +13,13 @@ namespace MAUI.ChartingSystem.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        /*public ObservableCollection<Appointment> Appointments
+        public ObservableCollection<Appointment> Appointments
         {
             get
             {
                 return new ObservableCollection<Appointment>(ChartServiceProxy.Current.GetAllAppointments());
             }
-        }*/
+        }
 
         public ObservableCollection<Patient> Patients
         {
@@ -29,14 +29,24 @@ namespace MAUI.ChartingSystem.ViewModels
             }
         }
 
+        public ObservableCollection<Physician> Physicians
+        {
+            get
+            {
+                return new ObservableCollection<Physician>(ChartServiceProxy.Current.GetAllPhysicians());
+            }
+        }
+
         public void Refresh()
         {
             NotifyPropertyChanged("Patients");
         }
 
-        //public Appointment? SelectedAppointment { get; set; }
+        public Appointment? SelectedAppointment { get; set; }
 
         public Patient? SelectedPatient { get; set; }
+
+        public Physician? SelectedPhysician { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

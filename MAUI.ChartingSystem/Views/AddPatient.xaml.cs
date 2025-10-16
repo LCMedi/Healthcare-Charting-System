@@ -4,9 +4,13 @@ using MAUI.ChartingSystem.ViewModels;
 
 namespace MAUI.ChartingSystem.Views;
 
+[QueryProperty(nameof(PatientId), "patientId")]
+
 public partial class PatientView : ContentPage
 {
     private AddPatientViewModel? _viewModel;
+
+    public int PatientId { get; set; }
 
     public PatientView()
     {
@@ -23,21 +27,50 @@ public partial class PatientView : ContentPage
         if (_viewModel is null)
             return;
 
-        var patient = _viewModel.ToPatient();
-        ChartServiceProxy.Current.AddPatient(patient);
+        // If editing an existing patient, update it in place; otherwise add a new one.
+        if (PatientId > 0)
+        {
+            var existing = ChartServiceProxy.Current.GetPatient(PatientId);
+            if (existing != null)
+            {
+                existing.SetName(_viewModel.Name);
+                existing.SetAddress(_viewModel.Address);
+                existing.SetBirthdate(_viewModel.Birthdate);
+                existing.SetRace(_viewModel.SelectedRace);
+                existing.SetGender(_viewModel.SelectedGender);
+
+                existing.MedicalHistory.Clear();
+                foreach (var note in _viewModel.MedicalNotes)
+                    existing.MedicalHistory.Add(note);
+            }
+        }
+        else
+        {
+            var patient = _viewModel.ToPatient();
+            ChartServiceProxy.Current.AddPatient(patient);
+        }
+
         Shell.Current.GoToAsync("//MainPage");
     }
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
-        if (_viewModel is null)
+        if (PatientId > 0)
         {
-            _viewModel = new AddPatientViewModel();
+            _viewModel = new AddPatientViewModel(PatientId);
             BindingContext = _viewModel;
         }
         else
         {
-            _viewModel.Reset();
+            if (_viewModel is null)
+            {
+                _viewModel = new AddPatientViewModel();
+                BindingContext = _viewModel;
+            }
+            else
+            {
+                _viewModel.Reset();
+            }
         }
     }
 }

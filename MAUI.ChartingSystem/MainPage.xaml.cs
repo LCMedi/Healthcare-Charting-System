@@ -15,15 +15,16 @@ namespace MAUI.ChartingSystem
 
         private void AddPatientClicked(object sender, EventArgs e)
         {
-            Shell.Current.GoToAsync("//Patient");
+            Shell.Current.GoToAsync("//Patient?patientId=0");
         }
 
-        private void EditClicked(object sender, EventArgs e)
+        private void EditPatientClicked(object sender, EventArgs e)
         {
-
+            var selectedId = (BindingContext as MainViewModel)?.SelectedPatient?.Id ?? 0;
+            Shell.Current.GoToAsync($"//Patient?patientId={selectedId}");
         }
 
-        private void DeleteClicked(object sender, EventArgs e)
+        private void DeletePatientClicked(object sender, EventArgs e)
         {
             (BindingContext as MainViewModel)?.Delete();
         }
@@ -31,6 +32,26 @@ namespace MAUI.ChartingSystem
         private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
         {
             (BindingContext as MainViewModel)?.Refresh();
+        }
+
+        private void EditPhysiciansClicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DeletePhysiciansClicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EditAppointmentClicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DeleteAppointmentClicked(object sender, EventArgs e)
+        {
+
         }
     }
 }
