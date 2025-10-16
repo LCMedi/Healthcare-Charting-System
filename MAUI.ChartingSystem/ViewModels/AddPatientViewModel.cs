@@ -2,26 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Microsoft.Maui.Controls;
 using Library.ChartingSystem.Models;
 
 namespace MAUI.ChartingSystem.ViewModels;
 
 public class AddPatientViewModel : INotifyPropertyChanged
 {
-    private string _name;
-    private string _address;
+    private string _name = string.Empty;
+    private string _address = string.Empty;
     private DateTime _birthdate = DateTime.Today;
     private RACE _selectedRace;
     private GENDER _selectedGender;
-    private MedicalNote _newMedicalNote;
-
-    // Fields for new medical note
+    private string _newDiagnosis = string.Empty;
+    private string _newPrescription = string.Empty;
     private DateTime _newNoteDate = DateTime.Today;
-    private string _newDiagnosis;
-    private string _newPrescription;
-    private Physician _newPhysician = new Physician("Dr. Smith", "12345", DateTime.Today, new List<string> { "General" });
+    private Physician _newPhysician = CreateDefaultPhysician();
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -64,16 +63,19 @@ public class AddPatientViewModel : INotifyPropertyChanged
         get => _newNoteDate;
         set { _newNoteDate = value; OnPropertyChanged(); }
     }
+
     public string NewDiagnosis
     {
         get => _newDiagnosis;
         set { _newDiagnosis = value; OnPropertyChanged(); }
     }
+
     public string NewPrescription
     {
         get => _newPrescription;
         set { _newPrescription = value; OnPropertyChanged(); }
     }
+
     public Physician NewPhysician
     {
         get => _newPhysician;
@@ -86,6 +88,10 @@ public class AddPatientViewModel : INotifyPropertyChanged
 
     public AddPatientViewModel()
     {
+        // initialize defaults if needed
+        _selectedRace = Races.FirstOrDefault();
+        _selectedGender = Genders.FirstOrDefault();
+
         AddMedicalNoteCommand = new Command(AddMedicalNote);
     }
 
@@ -97,7 +103,8 @@ public class AddPatientViewModel : INotifyPropertyChanged
             NewNoteDate = DateTime.Today;
             NewDiagnosis = string.Empty;
             NewPrescription = string.Empty;
-            // Optionally reset physician
+            // reset physician to a safe default instance (do not assign null to a non-nullable property)
+            NewPhysician = CreateDefaultPhysician();
         }
     }
 
@@ -109,9 +116,31 @@ public class AddPatientViewModel : INotifyPropertyChanged
         patient.SetBirthdate(Birthdate);
         patient.SetRace(SelectedRace);
         patient.SetGender(SelectedGender);
+
         foreach (var note in MedicalNotes)
             patient.MedicalHistory.Add(note);
+
         return patient;
+    }
+
+    // Reset all fields to defaults
+    public void Reset()
+    {
+        Name = string.Empty;
+        Address = string.Empty;
+        Birthdate = DateTime.Today;
+        SelectedRace = Races.FirstOrDefault();
+        SelectedGender = Genders.FirstOrDefault();
+        MedicalNotes.Clear();
+        NewNoteDate = DateTime.Today;
+        NewDiagnosis = string.Empty;
+        NewPrescription = string.Empty;
+        NewPhysician = CreateDefaultPhysician();
+    }
+
+    private static Physician CreateDefaultPhysician()
+    {
+        return new Physician("Dr. Smith", "12345", DateTime.Today, new List<string> { "General" });
     }
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
