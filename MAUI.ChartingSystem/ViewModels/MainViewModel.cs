@@ -44,5 +44,15 @@ namespace MAUI.ChartingSystem.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void Delete()
+        {
+            if (SelectedPatient == null)
+            {
+                return;
+            }
+            ChartServiceProxy.Current.RemovePatient(SelectedPatient);
+            NotifyPropertyChanged(nameof(Patients));
+        }
     }
 }

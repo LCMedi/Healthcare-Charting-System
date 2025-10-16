@@ -6,12 +6,11 @@ namespace MAUI.ChartingSystem.Views;
 
 public partial class PatientView : ContentPage
 {
-    private readonly AddPatientViewModel _viewModel = new();
+    private AddPatientViewModel? _viewModel;
 
     public PatientView()
     {
         InitializeComponent();
-        BindingContext = _viewModel;
     }
 
     private void CancelClicked(object sender, EventArgs e)
@@ -21,8 +20,24 @@ public partial class PatientView : ContentPage
 
     private void OkClicked(object sender, EventArgs e)
     {
+        if (_viewModel is null)
+            return;
+
         var patient = _viewModel.ToPatient();
         ChartServiceProxy.Current.AddPatient(patient);
         Shell.Current.GoToAsync("//MainPage");
+    }
+
+    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        if (_viewModel is null)
+        {
+            _viewModel = new AddPatientViewModel();
+            BindingContext = _viewModel;
+        }
+        else
+        {
+            _viewModel.Reset();
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace MAUI.ChartingSystem
 
         private void DeleteClicked(object sender, EventArgs e)
         {
-
+            (BindingContext as MainViewModel)?.Delete();
         }
 
         private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
