@@ -22,35 +22,39 @@ public partial class PatientView : ContentPage
         Shell.Current.GoToAsync("//MainPage");
     }
 
-    private void OkClicked(object sender, EventArgs e)
+    // CHANGED: async + use ViewModel's safe methods
+    private async void OkClicked(object sender, EventArgs e)
     {
         if (_viewModel is null)
             return;
 
-        // If editing an existing patient, update it in place; otherwise add a new one.
         if (PatientId > 0)
         {
             var existing = ChartServiceProxy.Current.GetPatient(PatientId);
-            if (existing != null)
+            if (existing is null)
             {
-                existing.SetName(_viewModel.Name);
-                existing.SetAddress(_viewModel.Address);
-                existing.SetBirthdate(_viewModel.Birthdate);
-                existing.SetRace(_viewModel.SelectedRace);
-                existing.SetGender(_viewModel.SelectedGender);
+                await DisplayAlert("Error", $"Patient with ID {PatientId} was not found.", "OK");
+                return;
+            }
 
-                existing.MedicalHistory.Clear();
-                foreach (var note in _viewModel.MedicalNotes)
-                    existing.MedicalHistory.Add(note);
+            if (!_viewModel.TryUpdateExistingPatient(existing, out var error))
+            {
+                await DisplayAlert("Invalid data", error, "OK");
+                return;
             }
         }
         else
         {
-            var patient = _viewModel.ToPatient();
-            ChartServiceProxy.Current.AddPatient(patient);
+            if (!_viewModel.TryCreatePatient(out var patient, out var error))
+            {
+                await DisplayAlert("Invalid data", error, "OK");
+                return;
+            }
+
+            ChartServiceProxy.Current.AddPatient(patient!);
         }
 
-        Shell.Current.GoToAsync("//MainPage");
+        await Shell.Current.GoToAsync("//MainPage");
     }
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
