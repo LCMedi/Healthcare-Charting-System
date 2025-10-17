@@ -62,6 +62,7 @@ public partial class PatientView : ContentPage
         if (PatientId > 0)
         {
             _viewModel = new AddPatientViewModel(PatientId);
+            _viewModel.Refresh();
             BindingContext = _viewModel;
         }
         else
@@ -69,11 +70,13 @@ public partial class PatientView : ContentPage
             if (_viewModel is null)
             {
                 _viewModel = new AddPatientViewModel();
+                _viewModel.Refresh();
                 BindingContext = _viewModel;
             }
             else
             {
                 _viewModel.Reset();
+                _viewModel.Refresh();
             }
         }
     }

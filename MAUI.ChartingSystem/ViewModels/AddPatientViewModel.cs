@@ -21,9 +21,12 @@ public class AddPatientViewModel : INotifyPropertyChanged
     private string _newDiagnosis = string.Empty;
     private string _newPrescription = string.Empty;
     private DateTime _newNoteDate = DateTime.Today;
-    private Physician _newPhysician = CreateDefaultPhysician();
+    private Physician? _selectedPhysician = null;
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
+    // Use ObservableCollection so UI updates when items are added/removed
+    public ObservableCollection<Physician> Physicians { get; } = new ObservableCollection<Physician>();
 
     public string Name
     {
@@ -77,10 +80,10 @@ public class AddPatientViewModel : INotifyPropertyChanged
         set { _newPrescription = value; OnPropertyChanged(); }
     }
 
-    public Physician NewPhysician
+    public Physician? SelectedPhysician
     {
-        get => _newPhysician;
-        set { _newPhysician = value; OnPropertyChanged(); }
+        get => _selectedPhysician;
+        set { _selectedPhysician = value; OnPropertyChanged(); }
     }
 
     public ObservableCollection<MedicalNote> MedicalNotes { get; } = new();
@@ -94,6 +97,9 @@ public class AddPatientViewModel : INotifyPropertyChanged
         _selectedGender = Genders.FirstOrDefault();
 
         AddMedicalNoteCommand = new Command(AddMedicalNote);
+
+        // load physicians initially
+        ReloadPhysicians();
     }
 
     public AddPatientViewModel(int id) : this()
@@ -115,18 +121,18 @@ public class AddPatientViewModel : INotifyPropertyChanged
         NewNoteDate = DateTime.Today;
         NewDiagnosis = string.Empty;
         NewPrescription = string.Empty;
-        NewPhysician = CreateDefaultPhysician();
+        SelectedPhysician = null;
     }
 
     public void AddMedicalNote()
     {
-        if (!string.IsNullOrWhiteSpace(NewDiagnosis) && !string.IsNullOrWhiteSpace(NewPrescription) && NewPhysician != null)
+        if (!string.IsNullOrWhiteSpace(NewDiagnosis) && !string.IsNullOrWhiteSpace(NewPrescription) && SelectedPhysician != null)
         {
-            MedicalNotes.Add(new MedicalNote(NewNoteDate, NewDiagnosis, NewPrescription, NewPhysician));
+            MedicalNotes.Add(new MedicalNote(NewNoteDate, NewDiagnosis, NewPrescription, SelectedPhysician));
             NewNoteDate = DateTime.Today;
             NewDiagnosis = string.Empty;
             NewPrescription = string.Empty;
-            NewPhysician = CreateDefaultPhysician();
+            SelectedPhysician = null;
         }
     }
 
@@ -203,12 +209,24 @@ public class AddPatientViewModel : INotifyPropertyChanged
         NewNoteDate = DateTime.Today;
         NewDiagnosis = string.Empty;
         NewPrescription = string.Empty;
-        NewPhysician = CreateDefaultPhysician();
+        SelectedPhysician = null;
     }
 
-    private static Physician CreateDefaultPhysician()
+    // Reload the Physicians collection from the service
+    public void ReloadPhysicians()
     {
-        return new Physician("Dr. Smith", "12345", DateTime.Today, "General");
+        var list = ChartServiceProxy.Current.GetAllPhysicians() ?? new List<Physician>();
+        Physicians.Clear();
+        foreach (var p in list)
+            Physicians.Add(p);
+
+        // notify in case UI needs it (usually unnecessary for same-instance ObservableCollection)
+        OnPropertyChanged(nameof(Physicians));
+    }
+
+    public void Refresh()
+    {
+        ReloadPhysicians();
     }
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
