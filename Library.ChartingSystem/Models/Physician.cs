@@ -13,7 +13,7 @@ namespace Library.ChartingSystem.Models
         public string? Name { get; private set; } = string.Empty;
         public string? LicenseNumber { get; private set; } = string.Empty;
         public DateTime? graduationDate { get; private set; }
-        public string? Specializations { get; private set; } = string.Empty;
+        public string? Specializations { get; set; } = string.Empty;
 
         public Physician()
         {
