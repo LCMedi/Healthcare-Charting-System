@@ -57,7 +57,7 @@ namespace MAUI.ChartingSystem.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void Delete()
+        public void DeletePatient()
         {
             if (SelectedPatient == null)
             {
@@ -65,6 +65,16 @@ namespace MAUI.ChartingSystem.ViewModels
             }
             ChartServiceProxy.Current.RemovePatient(SelectedPatient);
             NotifyPropertyChanged(nameof(Patients));
+        }
+
+        public void DeletePhysician()
+        {
+            if (SelectedPhysician == null)
+            {
+                return;
+            }
+            ChartServiceProxy.Current.RemovePhysician(SelectedPhysician);
+            NotifyPropertyChanged(nameof(Physicians));
         }
     }
 }

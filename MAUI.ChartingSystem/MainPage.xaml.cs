@@ -26,7 +26,7 @@ namespace MAUI.ChartingSystem
 
         private void DeletePatientClicked(object sender, EventArgs e)
         {
-            (BindingContext as MainViewModel)?.Delete();
+            (BindingContext as MainViewModel)?.DeletePatient();
         }
 
         private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
@@ -41,7 +41,7 @@ namespace MAUI.ChartingSystem
 
         private void DeletePhysiciansClicked(object sender, EventArgs e)
         {
-
+            (BindingContext as MainViewModel)?.DeletePhysician();
         }
 
         private void EditAppointmentClicked(object sender, EventArgs e)
