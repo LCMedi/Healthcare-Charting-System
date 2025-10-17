@@ -8,7 +8,7 @@ namespace Library.ChartingSystem.Models
 {
     public class Physician
     {
-        public static int idCounter = 1;
+        private static int idCounter = 1;
         public int Id { get; private set; }
         public string? Name { get; private set; } = string.Empty;
         public string? LicenseNumber { get; private set; } = string.Empty;
@@ -26,7 +26,7 @@ namespace Library.ChartingSystem.Models
             SetLicenseNumber(licenseNumber);
             SetGraduationDate(date);
             Specializations = specializations;
-            Id = idCounter++;
+            this.Id = idCounter++;
         }
 
         // Name Setter
