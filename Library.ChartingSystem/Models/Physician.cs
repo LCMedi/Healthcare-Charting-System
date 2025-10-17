@@ -13,19 +13,19 @@ namespace Library.ChartingSystem.Models
         public string? Name { get; private set; } = string.Empty;
         public string? LicenseNumber { get; private set; } = string.Empty;
         public DateTime? graduationDate { get; private set; }
-        public List<string> Specializations { get; private set; } = new();
+        public string? Specializations { get; private set; } = string.Empty;
 
         public Physician()
         {
         }
 
         // Constructor
-        public Physician(string name, string licenseNumber, DateTime date, List<string> specializations)
+        public Physician(string name, string licenseNumber, DateTime date, string specializations)
         {
             SetName(name);
             SetLicenseNumber(licenseNumber);
             SetGraduationDate(date);
-            Specializations = specializations ?? new List<string>();
+            Specializations = specializations;
             Id = idCounter++;
         }
 
@@ -59,9 +59,12 @@ namespace Library.ChartingSystem.Models
         // Create Specialization
         public void AddSpecialization(string specialization)
         {
-            if (!string.IsNullOrEmpty(specialization) && !Specializations.Contains(specialization))
-            {
-                Specializations.Add(specialization);
+            if (!string.IsNullOrEmpty(specialization))
+            { 
+                if (string.IsNullOrEmpty(Specializations))
+                    Specializations = specialization;
+                else
+                    Specializations += ", " + specialization;
             }
         }
 
@@ -71,15 +74,27 @@ namespace Library.ChartingSystem.Models
             if (string.IsNullOrEmpty(specialization))
                 throw new ArgumentException("Specialization cannot be empty.");
 
-            if (!Specializations.Contains(specialization))
+            if (string.IsNullOrEmpty(Specializations) || !Specializations.Contains(specialization))
                 throw new ArgumentException("Specialization not found.");
 
-            Specializations.Remove(specialization);
+            // Remove the specialization from the comma-separated list
+            var specs = Specializations.Split(new[] { ", " }, StringSplitOptions.None)
+                .Where(s => !string.Equals(s, specialization, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+            Specializations = string.Join(", ", specs);
+        }
+
+        public string Display
+        {
+            get
+            {
+                return ToString();
+            }
         }
 
         public override string ToString()
         {
-            string specs = (Specializations != null && Specializations.Count > 0) ? string.Join(", ", Specializations) : "None";
+            string specs = (Specializations != null && Specializations.Length > 0) ? string.Join(", ", Specializations) : "None";
             return $"[{Id}]\t{Name ?? "N/A"}\t{LicenseNumber ?? "N/A"}\t\t\t{specs}";
         }
     }

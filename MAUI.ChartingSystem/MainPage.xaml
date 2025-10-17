@@ -92,6 +92,7 @@
                 </ListView.ItemTemplate>
             </ListView>
             <Button Text="Add Patient" Clicked="AddPatientClicked"/>
+            <Button Text="Add Physician" Clicked="AddPhysicianClicked"/>
         </VerticalStackLayout>
     </ScrollView>
 

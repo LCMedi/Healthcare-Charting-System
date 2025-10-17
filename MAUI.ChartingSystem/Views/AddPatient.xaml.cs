@@ -22,7 +22,7 @@ public partial class PatientView : ContentPage
         Shell.Current.GoToAsync("//MainPage");
     }
 
-    // CHANGED: async + use ViewModel's safe methods
+
     private async void OkClicked(object sender, EventArgs e)
     {
         if (_viewModel is null)
