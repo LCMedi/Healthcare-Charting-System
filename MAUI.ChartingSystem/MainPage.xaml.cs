@@ -53,5 +53,10 @@ namespace MAUI.ChartingSystem
         {
 
         }
+
+        private void AddPhysicianClicked(object sender, EventArgs e)
+        {
+            Shell.Current.GoToAsync("//Physician");
+        }
     }
 }

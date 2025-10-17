@@ -208,7 +208,7 @@ public class AddPatientViewModel : INotifyPropertyChanged
 
     private static Physician CreateDefaultPhysician()
     {
-        return new Physician("Dr. Smith", "12345", DateTime.Today, new List<string> { "General" });
+        return new Physician("Dr. Smith", "12345", DateTime.Today, "General");
     }
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)

@@ -40,6 +40,8 @@ namespace MAUI.ChartingSystem.ViewModels
         public void Refresh()
         {
             NotifyPropertyChanged("Patients");
+            NotifyPropertyChanged("Physicians");
+            NotifyPropertyChanged("Appointments");
         }
 
         public Appointment? SelectedAppointment { get; set; }
