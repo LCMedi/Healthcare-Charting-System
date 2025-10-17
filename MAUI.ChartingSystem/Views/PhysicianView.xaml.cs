@@ -45,7 +45,7 @@ public partial class PhysicianView : ContentPage
             var existing = ChartServiceProxy.Current.GetPhysician(PhysicianId);
             if (existing is null)
             {
-                await DisplayAlert("Error", $"Patient with ID {PhysicianId} was not found.", "OK");
+                await DisplayAlert("Error", $"Physician with ID {PhysicianId} was not found.", "OK");
                 return;
             }
 
