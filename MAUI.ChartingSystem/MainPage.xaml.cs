@@ -36,7 +36,8 @@ namespace MAUI.ChartingSystem
 
         private void EditPhysiciansClicked(object sender, EventArgs e)
         {
-
+            var selectedId = (BindingContext as MainViewModel)?.SelectedPhysician?.Id ?? 0;
+            Shell.Current.GoToAsync($"//Physician?physicianId={selectedId}");
         }
 
         private void DeletePhysiciansClicked(object sender, EventArgs e)
@@ -56,7 +57,7 @@ namespace MAUI.ChartingSystem
 
         private void AddPhysicianClicked(object sender, EventArgs e)
         {
-            Shell.Current.GoToAsync("//Physician");
+            Shell.Current.GoToAsync("//Physician?physicianId=0");
         }
     }
 }

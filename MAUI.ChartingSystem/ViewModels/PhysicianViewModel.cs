@@ -119,5 +119,28 @@ namespace MAUI.ChartingSystem.ViewModels
                 return false;
             }
         }
+
+        public bool UpdatePatient(Physician existing, out string error)
+        {
+            try
+            {
+                existing.SetName(Name);
+                existing.SetLicenseNumber(LicenseNumber);
+                existing.SetGraduationDate(GraduationDate);
+                existing.Specializations = Specializations;
+                error = string.Empty;
+                return true;
+            }
+            catch (ArgumentException ex)
+            {
+                error = ex.Message;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                return false;
+            }
+        }
     }
 }
