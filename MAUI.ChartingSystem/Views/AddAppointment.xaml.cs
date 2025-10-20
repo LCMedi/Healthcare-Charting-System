@@ -22,18 +22,18 @@ public partial class AppointmentView : ContentPage
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
-        if (AppointmentId == 0)
+        if (AppointmentId > 0)
         {
-            _viewModel = new AddAppointmentViewModel();
+            _viewModel = new AddAppointmentViewModel(AppointmentId);
             BindingContext = _viewModel;
-        } 
+        }
         else
         {
-            if (_viewModel == null)
+            if (_viewModel is null)
             {
-                _viewModel = new AddAppointmentViewModel(AppointmentId);
+                _viewModel = new AddAppointmentViewModel();
                 BindingContext = _viewModel;
-            } 
+            }
             else
             {
                 _viewModel.Reset();

@@ -17,6 +17,8 @@ namespace MAUI.ChartingSystem.ViewModels
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        private Appointment? _appointment = null;
+
         public ObservableCollection<Patient> Patients
         {
             get
@@ -101,6 +103,15 @@ namespace MAUI.ChartingSystem.ViewModels
         // Constructor for Updates
         public AddAppointmentViewModel(int id) : this()
         {
+            _appointment = ChartServiceProxy.Current.GetAppointment(id);
+            if (_appointment == null)
+                return;
+
+            Patient = _appointment.Patient;
+            Physician = _appointment.Physician;
+            Date = _appointment.AppointmentDate;
+            Time = _appointment?.AppointmentDate.Value.TimeOfDay;
+            
             SetUpCommands();
         }
 
@@ -113,16 +124,29 @@ namespace MAUI.ChartingSystem.ViewModels
         {
             try
             {
-                if (ChartServiceProxy.Current.IsTimeAvailable(Physician, SelectedDateTime))
+                // If doing update
+                if (_appointment != null)
                 {
-                    ChartServiceProxy.Current.ScheduleAppointment(new Appointment(Patient, Physician, SelectedDateTime));
+                    // Try Updating Appointment
+                    ChartServiceProxy.Current.UpdateAppointment(_appointment, Patient, Physician, SelectedDateTime);
                     Shell.Current.DisplayAlert("Success", "Appointment added successfully!", "OK");
                     Shell.Current.GoToAsync("//MainPage");
                 }
+                // If doing create
                 else
                 {
-                    Shell.Current.DisplayAlert("Error", "There already exists an appointment with the given time.", "OK");
-                    return;
+                    // Try Adding Appointment
+                    if (ChartServiceProxy.Current.IsTimeAvailable(Physician, SelectedDateTime))
+                    {
+                        ChartServiceProxy.Current.ScheduleAppointment(new Appointment(Patient, Physician, SelectedDateTime));
+                        Shell.Current.DisplayAlert("Success", "Appointment added successfully!", "OK");
+                        Shell.Current.GoToAsync("//MainPage");
+                    }
+                    else
+                    {
+                        Shell.Current.DisplayAlert("Error", "There already exists an appointment with the given time.", "OK");
+                        return;
+                    }
                 }
             }
             catch (ArgumentException ex)
@@ -137,10 +161,13 @@ namespace MAUI.ChartingSystem.ViewModels
 
         public void Reset()
         {
+            _appointment = null;
             Patient = null;
             Physician = null;
             Date = DateTime.Today;
             Time = new TimeSpan(8, 0, 0);
+            OnPropertyChanged(nameof(Physicians));
+            OnPropertyChanged(nameof(Patients));
         }
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
