@@ -89,7 +89,6 @@ namespace MAUI.ChartingSystem.ViewModels
             }
         }
 
-        public ICommand? DeleteAppointmentCommand { get; set; }
         public ICommand? EditAppointmentCommand { get; set; }
         public ICommand? SaveAppointmentCommand { get; set; }
 
@@ -114,9 +113,17 @@ namespace MAUI.ChartingSystem.ViewModels
         {
             try
             {
-                ChartServiceProxy.Current.ScheduleAppointment(new Appointment(Patient, Physician, SelectedDateTime));
-                Shell.Current.DisplayAlert("Success", "Appointment added successfully!", "OK");
-                Shell.Current.GoToAsync("//MainPage");
+                if (ChartServiceProxy.Current.IsTimeAvailable(Physician, SelectedDateTime))
+                {
+                    ChartServiceProxy.Current.ScheduleAppointment(new Appointment(Patient, Physician, SelectedDateTime));
+                    Shell.Current.DisplayAlert("Success", "Appointment added successfully!", "OK");
+                    Shell.Current.GoToAsync("//MainPage");
+                }
+                else
+                {
+                    Shell.Current.DisplayAlert("Error", "There already exists an appointment with the given time.", "OK");
+                    return;
+                }
             }
             catch (ArgumentException ex)
             {

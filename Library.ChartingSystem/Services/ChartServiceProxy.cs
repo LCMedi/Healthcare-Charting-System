@@ -38,7 +38,7 @@ namespace Library.ChartingSystem.Services
             // Add Patients, and Physicians for testing purposes
             AddPatient(new Patient("John Smith", new DateTime(1980, 10, 20), RACE.White, GENDER.Male, "123 Main St"));
             AddPatient(new Patient("Mateo Rivas", new DateTime(1987, 7, 22), RACE.Hispanic, GENDER.Male, "1765 Cypress Ln"));
-            AddPatient(new Patient("Jasmine Holloway", new DateTime(1992, 3, 14), RACE.AfricanAmerican, GENDER.Female, "4823 Maplewood Dr"));
+            AddPatient(new Patient("Jasmine Holloway", new DateTime(1992, 3, 14), RACE.Black, GENDER.Female, "4823 Maplewood Dr"));
             AddPhysician(new Physician("Dr Allison", "HGY-8463", new DateTime(1990, 12, 10), "General"));
             AddPhysician(new Physician("Dr Elena Marquez", "TXB-61592", new DateTime(2015, 5, 20), "Family Medicine, Geriatrics"));
             AddPhysician(new Physician("Dr Marcus Chen", "FLR-92741", new DateTime(2016, 5, 18), "Cardiology, Preventive Medicine"));
@@ -80,7 +80,7 @@ namespace Library.ChartingSystem.Services
                 throw new ArgumentException("Appointment already in the system.");
 
             // Check for overlapping appointments for the same physician
-            if (CheckOverlapping(appointment))
+            if (!IsTimeAvailable(appointment.Physician!, appointment.AppointmentDate!.Value, appointment.EndTime!.Value))
                 throw new ArgumentException("There already exists an appointment with the given time.");
 
             Appointments.Add(appointment);
@@ -281,14 +281,67 @@ namespace Library.ChartingSystem.Services
         }
 
         // HELPER FUNCTIONS
+
+        // Returns true when the provided appointment overlaps an existing appointment.
         private bool CheckOverlapping(Appointment appointment)
         {
-            var physician = appointment.Physician;
-
-            if (physician == null)
+            if (appointment == null)
                 return false;
 
-            return Appointments.Any(x => x.Physician == physician && x.AppointmentDate < appointment.EndTime && appointment.AppointmentDate < x.EndTime);
+            var physician = appointment.Physician;
+
+            if (physician == null || !appointment.AppointmentDate.HasValue || !appointment.EndTime.HasValue)
+                return false;
+
+            var s = appointment.AppointmentDate.Value;
+            var e = appointment.EndTime.Value;
+
+            return Appointments.Any(x =>
+                x.Physician == physician
+                && x != appointment
+                && x.AppointmentDate.HasValue
+                && x.EndTime.HasValue
+                && x.AppointmentDate.Value < e
+                && s < x.EndTime.Value);
+        }
+
+        public bool IsTimeAvailable(Physician physician, DateTime start, DateTime end, Appointment? exclude = null)
+        {
+            if (physician == null)
+                throw new ArgumentNullException(nameof(physician));
+
+            if (end <= start)
+                throw new ArgumentException("End must be after start.", nameof(end));
+
+            // Overlap condition: existing.Start < new.End && new.Start < existing.End
+            var overlapExists = Appointments.Any(x =>
+                x.Physician == physician
+                && x != exclude
+                && x.AppointmentDate.HasValue
+                && x.EndTime.HasValue
+                && x.AppointmentDate.Value < end
+                && start < x.EndTime.Value);
+
+            return !overlapExists;
+        }
+        
+        // Int Overload for duration. Returns true when available.
+        public bool IsTimeAvailable(Physician physician, DateTime start, int durationMinutes = 30, Appointment? exclude = null)
+        {
+            if (durationMinutes <= 0)
+                throw new ArgumentException("Duration must be positive.", nameof(durationMinutes));
+
+            var end = start.AddMinutes(durationMinutes);
+            return IsTimeAvailable(physician, start, end, exclude);
+        }
+
+        // Convenience overload that accepts patient
+        public bool IsTimeAvailable(Patient patient, Physician physician, DateTime start, int durationMinutes = 30, Appointment? exclude = null)
+        {
+            if (patient == null)
+                throw new ArgumentNullException(nameof(patient));
+
+            return IsTimeAvailable(physician, start, durationMinutes, exclude);
         }
 
     }

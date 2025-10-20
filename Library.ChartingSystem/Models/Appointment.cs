@@ -16,8 +16,6 @@ namespace Library.ChartingSystem.Models
         public DateTime? AppointmentDate { get; private set; } = DateTime.Now;
         public DateTime? EndTime => AppointmentDate.HasValue ? AppointmentDate.Value.AddMinutes(30) : (DateTime?)default;
 
-        public Appointment() { }
-
         public Appointment(Patient patient, Physician physician, DateTime date)
         {
             if (patient == null)
@@ -68,7 +66,21 @@ namespace Library.ChartingSystem.Models
             // Use null-conditional and null-coalescing operators to avoid null dereference warnings
             var physicianName = Physician?.Name ?? "N/A";
             var patientName = Patient?.Name ?? "N/A";
-            return $"{Id}\t{physicianName}\t\t{patientName}\t\tFrom: {AppointmentDate:g} To: {EndTime:g}";
+            return $"[{Id}]\t{physicianName}\t\t{patientName}\t\tFrom: [{AppointmentDate:g}]\t To: [{EndTime:g}]";
+        }
+
+        public void SetPatient(Patient? patient)
+        {
+            if (patient == null)
+                throw new ArgumentNullException("Appointment must have a patient");
+            this.Patient = patient;
+        }
+
+        public void SetPhysician(Physician? physician)
+        {
+            if (physician == null)
+                throw new ArgumentNullException("Appointment must have a physician");
+            this.Physician = physician;
         }
     }
 }
