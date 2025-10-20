@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace MAUI.ChartingSystem.ViewModels
 {
-    public class PhysicianViewModel : INotifyPropertyChanged
+    public class AddPhysicianViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -52,7 +52,7 @@ namespace MAUI.ChartingSystem.ViewModels
 
         public ICommand AddSpecCommand { get; set; }
 
-        public PhysicianViewModel()
+        public AddPhysicianViewModel()
         {
             AddSpecCommand = new Command(AddSpec);
         }
@@ -71,7 +71,7 @@ namespace MAUI.ChartingSystem.ViewModels
             NewSpec = string.Empty;
         }
 
-        public PhysicianViewModel(int id) : this()
+        public AddPhysicianViewModel(int id) : this()
         {
             var physician = ChartServiceProxy.Current.GetPhysician(id);
             if (physician is null)

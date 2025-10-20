@@ -35,6 +35,13 @@ namespace Library.ChartingSystem.Services
             Appointments = new List<Appointment>();
             Patients = new List<Patient>();
             Physicians = new List<Physician>();
+            // Add Patients, and Physicians for testing purposes
+            AddPatient(new Patient("John Smith", new DateTime(1980, 10, 20), RACE.White, GENDER.Male, "123 Main St"));
+            AddPatient(new Patient("Mateo Rivas", new DateTime(1987, 7, 22), RACE.Hispanic, GENDER.Male, "1765 Cypress Ln"));
+            AddPatient(new Patient("Jasmine Holloway", new DateTime(1992, 3, 14), RACE.AfricanAmerican, GENDER.Female, "4823 Maplewood Dr"));
+            AddPhysician(new Physician("Dr Allison", "HGY-8463", new DateTime(1990, 12, 10), "General"));
+            AddPhysician(new Physician("Dr Elena Marquez", "TXB-61592", new DateTime(2015, 5, 20), "Family Medicine, Geriatrics"));
+            AddPhysician(new Physician("Dr Marcus Chen", "FLR-92741", new DateTime(2016, 5, 18), "Cardiology, Preventive Medicine"));
         }
 
         // Create Patient

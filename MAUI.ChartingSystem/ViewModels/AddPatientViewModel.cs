@@ -25,7 +25,6 @@ public class AddPatientViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    // Use ObservableCollection so UI updates when items are added/removed
     public ObservableCollection<Physician> Physicians { get; } = new ObservableCollection<Physician>();
 
     public string Name
@@ -92,13 +91,11 @@ public class AddPatientViewModel : INotifyPropertyChanged
 
     public AddPatientViewModel()
     {
-        // initialize defaults if needed
         _selectedRace = Races.FirstOrDefault();
         _selectedGender = Genders.FirstOrDefault();
 
         AddMedicalNoteCommand = new Command(AddMedicalNote);
 
-        // load physicians initially
         ReloadPhysicians();
     }
 
@@ -197,7 +194,6 @@ public class AddPatientViewModel : INotifyPropertyChanged
         }
     }
 
-    // Reset all fields to defaults
     public void Reset()
     {
         Name = string.Empty;
@@ -212,7 +208,6 @@ public class AddPatientViewModel : INotifyPropertyChanged
         SelectedPhysician = null;
     }
 
-    // Reload the Physicians collection from the service
     public void ReloadPhysicians()
     {
         var list = ChartServiceProxy.Current.GetAllPhysicians() ?? new List<Physician>();
@@ -220,7 +215,6 @@ public class AddPatientViewModel : INotifyPropertyChanged
         foreach (var p in list)
             Physicians.Add(p);
 
-        // notify in case UI needs it (usually unnecessary for same-instance ObservableCollection)
         OnPropertyChanged(nameof(Physicians));
     }
 

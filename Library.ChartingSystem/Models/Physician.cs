@@ -95,7 +95,7 @@ namespace Library.ChartingSystem.Models
         public override string ToString()
         {
             string specs = (Specializations != null && Specializations.Length > 0) ? string.Join(", ", Specializations) : "None";
-            return $"[{Id}]\t{Name ?? "N/A"}\t{LicenseNumber ?? "N/A"}\t\t\t{specs}";
+            return $"[{Id}]\t{Name ?? "N/A"}\t\t{LicenseNumber ?? "N/A"}\t\t\t{specs}";
         }
     }
 }
