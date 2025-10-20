@@ -45,17 +45,6 @@ namespace MAUI.ChartingSystem
             (BindingContext as MainViewModel)?.DeletePhysician();
         }
 
-        private void EditAppointmentClicked(object sender, EventArgs e)
-        {
-            /*var selectedId = (BindingContext as MainViewModel)?.SelectedAppointment?.Id ?? 0;
-            Shell.Current.GoToAsync($"//Appointment?appointmentId={selectedId}");*/
-        }
-
-        private void DeleteAppointmentClicked(object sender, EventArgs e)
-        {
-            //(BindingContext as MainViewModel)?.DeleteAppointment();
-        }
-
         private void AddPhysicianClicked(object sender, EventArgs e)
         {
             Shell.Current.GoToAsync("//Physician?physicianId=0");

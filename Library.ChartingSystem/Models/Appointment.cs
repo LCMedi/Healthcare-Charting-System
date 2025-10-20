@@ -14,7 +14,7 @@ namespace Library.ChartingSystem.Models
         public Physician? Physician { get; private set; }
 
         public DateTime? AppointmentDate { get; private set; } = DateTime.Now;
-        public DateTime? EndTime => AppointmentDate.HasValue ? AppointmentDate.Value.AddMinutes(30) : (DateTime?)default;
+        public DateTime? EndTime => AppointmentDate?.AddMinutes(30);
 
         public Appointment(Patient patient, Physician physician, DateTime date)
         {
@@ -37,7 +37,6 @@ namespace Library.ChartingSystem.Models
                 throw new ArgumentException("Appointments can only be scheduled between 8 AM and 5 PM, Monday to Friday.");
             if (date < DateTime.Now)
                 throw new ArgumentException("Appointment date has to be in the future.");
-
 
             AppointmentDate = date;
         }

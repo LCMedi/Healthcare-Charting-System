@@ -87,10 +87,10 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <Button Clicked="EditAppointmentClicked" Text="Edit" Grid.Column="0"/>
+                                    <Button Command="{Binding BindingContext.EditAppointmentCommand, Source={x:Reference Name=AppointmentsListView}}"
+                                            CommandParameter="{Binding .}" Text="Edit" Grid.Column="0"/>
                                     <Button Command="{Binding BindingContext.DeleteAppointmentCommand, Source={x:Reference Name=AppointmentsListView}}" 
-                                            CommandParameter="{Binding .}" Text="Delete" Grid.Column="1"
-                                    />
+                                            CommandParameter="{Binding .}" Text="Delete" Grid.Column="1"/>
                                 </Grid>
                             </Grid>
                         </ViewCell>

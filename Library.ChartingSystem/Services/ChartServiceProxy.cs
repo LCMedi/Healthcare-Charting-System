@@ -88,6 +88,47 @@ namespace Library.ChartingSystem.Services
         }
 
         // Update Appointment
+        public Appointment UpdateAppointment(Appointment appointment, Patient patient, Physician physician, DateTime newStart)
+        {
+            if (appointment == null)
+                throw new ArgumentException("Appointment cannot be empty.");
+
+            var existing = Appointments.FirstOrDefault(x => x.Id == appointment.Id);
+
+            if (existing == null)
+                throw new ArgumentException("Appointment not found in the system.");
+
+            if (patient == null)
+                throw new ArgumentNullException(nameof(patient));
+
+            if (!Patients.Contains(patient))
+                throw new ArgumentException("Patient not found in the system.");
+
+            if (physician == null)
+                throw new ArgumentNullException(nameof(physician));
+
+            if (!Physicians.Contains(physician))
+                throw new ArgumentException("Physician not found in the system.");
+
+            if (!Appointment.IsValidTime(newStart))
+                throw new ArgumentException("Appointments can only be scheduled between 8 AM and 5 PM, Monday to Friday.");
+
+            if (newStart < DateTime.Now)
+                throw new ArgumentException("Appointment date has to be in the future.");
+
+            var end = newStart.AddMinutes(30);
+
+            if (!IsTimeAvailable(physician, newStart, end, existing))
+                throw new ArgumentException("There already exists an appointment with the given time.");
+
+            existing.SetPatient(patient);
+            existing.SetPhysician(physician);
+            existing.SetAppointmentDate(newStart);
+
+            return existing;
+        }
+
+        // Reschedule Appointment
         public Appointment RescheduleAppointment(Appointment appointment, DateTime newTime)
         {
             if (appointment == null)

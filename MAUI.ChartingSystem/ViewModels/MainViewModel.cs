@@ -45,9 +45,12 @@ namespace MAUI.ChartingSystem.ViewModels
 
         public void Refresh()
         {
-            NotifyPropertyChanged("Patients");
-            NotifyPropertyChanged("Physicians");
-            NotifyPropertyChanged("Appointments");
+            SelectedAppointment = null;
+            SelectedPhysician = null;
+            SelectedPatient = null;
+            NotifyPropertyChanged(nameof(Patients));
+            NotifyPropertyChanged(nameof(Physicians));
+            NotifyPropertyChanged(nameof(Appointments));
         }
 
         public Appointment? SelectedAppointment { get; set; }
@@ -57,6 +60,7 @@ namespace MAUI.ChartingSystem.ViewModels
         public Physician? SelectedPhysician { get; set; }
 
         public ICommand? DeleteAppointmentCommand { get; set; }
+        public ICommand? EditAppointmentCommand { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -72,8 +76,7 @@ namespace MAUI.ChartingSystem.ViewModels
                 return;
             }
             ChartServiceProxy.Current.RemovePatient(SelectedPatient);
-            NotifyPropertyChanged(nameof(Patients));
-            NotifyPropertyChanged(nameof(Appointments));
+            Refresh();
         }
 
         public void DeletePhysician()
@@ -83,11 +86,10 @@ namespace MAUI.ChartingSystem.ViewModels
                 return;
             }
             ChartServiceProxy.Current.RemovePhysician(SelectedPhysician);
-            NotifyPropertyChanged(nameof(Physicians));
-            NotifyPropertyChanged(nameof(Appointments));
+            Refresh();
         }
 
-        public async Task DoDelete(Appointment appointment)
+        private async Task DeleteAppointment(Appointment appointment)
         {
             if (appointment == null)
                 return;
@@ -99,9 +101,18 @@ namespace MAUI.ChartingSystem.ViewModels
                 NotifyPropertyChanged(nameof(Appointments));
         }
 
+        private async Task EditAppointment(Appointment appointment)
+        {
+            if (appointment == null)
+                return;
+
+            await Shell.Current.GoToAsync($"//Appointment?appointmentId={appointment.Id}");
+        }
+
         private void SetUpCommands()
         {
-            DeleteAppointmentCommand = new Command<Appointment>(async (appt) => await DoDelete(appt));
+            DeleteAppointmentCommand = new Command<Appointment>(async (appt) => await DeleteAppointment(appt));
+            EditAppointmentCommand = new Command<Appointment>(async (appt) => await EditAppointment(appt));
         }
     }
 }
