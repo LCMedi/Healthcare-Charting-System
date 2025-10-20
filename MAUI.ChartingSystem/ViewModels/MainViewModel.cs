@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace MAUI.ChartingSystem.ViewModels
 {
@@ -37,6 +38,11 @@ namespace MAUI.ChartingSystem.ViewModels
             }
         }
 
+        public MainViewModel()
+        {
+            SetUpCommands();
+        }
+
         public void Refresh()
         {
             NotifyPropertyChanged("Patients");
@@ -44,11 +50,13 @@ namespace MAUI.ChartingSystem.ViewModels
             NotifyPropertyChanged("Appointments");
         }
 
-        public AddAppointmentViewModel? SelectedAppointment { get; set; }
+        public Appointment? SelectedAppointment { get; set; }
 
         public Patient? SelectedPatient { get; set; }
 
         public Physician? SelectedPhysician { get; set; }
+
+        public ICommand? DeleteAppointmentCommand { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -65,6 +73,7 @@ namespace MAUI.ChartingSystem.ViewModels
             }
             ChartServiceProxy.Current.RemovePatient(SelectedPatient);
             NotifyPropertyChanged(nameof(Patients));
+            NotifyPropertyChanged(nameof(Appointments));
         }
 
         public void DeletePhysician()
@@ -75,11 +84,24 @@ namespace MAUI.ChartingSystem.ViewModels
             }
             ChartServiceProxy.Current.RemovePhysician(SelectedPhysician);
             NotifyPropertyChanged(nameof(Physicians));
+            NotifyPropertyChanged(nameof(Appointments));
         }
 
-        public void DeleteAppointment()
+        public async Task DoDelete(Appointment appointment)
         {
-            
+            if (appointment == null)
+                return;
+
+            bool confirm = await App.Current.MainPage.DisplayAlert("Confirm", $"Delete {appointment.Display}?", "Yes", "No");
+
+            if (confirm)
+                ChartServiceProxy.Current.CancelAppointment(appointment);
+                NotifyPropertyChanged(nameof(Appointments));
+        }
+
+        private void SetUpCommands()
+        {
+            DeleteAppointmentCommand = new Command<Appointment>(async (appt) => await DoDelete(appt));
         }
     }
 }

@@ -13,6 +13,7 @@
                 Text="Healthcare Charting Management System"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
+            <!--Patients List View-->
             <Label Text="Patients" FontSize="24" HorizontalOptions="Center"/>
             <ListView
                 ItemsSource="{Binding Patients}"
@@ -39,10 +40,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!--Physicians List View-->
             <Label Text="Physicians" FontSize="24" HorizontalOptions="Center"/>
             <ListView
-            ItemsSource="{Binding Physicians}"
-            SelectedItem="{Binding SelectedPhysician}">
+                ItemsSource="{Binding Physicians}"
+                SelectedItem="{Binding SelectedPhysician}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -65,10 +67,12 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!--Appointments List View-->
             <Label Text="Appointments" FontSize="24" HorizontalOptions="Center"/>
             <ListView
-            ItemsSource="{Binding Appointments}"
-            SelectedItem="{Binding SelectedAppointment}">
+                x:Name="AppointmentsListView"
+                ItemsSource="{Binding Appointments}"
+                SelectedItem="{Binding SelectedAppointment}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -84,13 +88,16 @@
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
                                     <Button Clicked="EditAppointmentClicked" Text="Edit" Grid.Column="0"/>
-                                    <Button Clicked="DeleteAppointmentClicked" Text="Delete" Grid.Column="1"/>
+                                    <Button Command="{Binding BindingContext.DeleteAppointmentCommand, Source={x:Reference Name=AppointmentsListView}}" 
+                                            CommandParameter="{Binding .}" Text="Delete" Grid.Column="1"
+                                    />
                                 </Grid>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <!--Add Buttons-->
             <Button Text="Add Patient" Clicked="AddPatientClicked"/>
             <Button Text="Add Physician" Clicked="AddPhysicianClicked"/>
             <Button Text="Add Appointment" Clicked="AddAppointmentClicked"/>

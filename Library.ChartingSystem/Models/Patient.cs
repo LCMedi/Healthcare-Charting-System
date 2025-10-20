@@ -13,7 +13,7 @@ namespace Library.ChartingSystem.Models
     public enum RACE
     {
         Asian,
-        AfricanAmerican,
+        Black,
         White,
         Hispanic,
         Other

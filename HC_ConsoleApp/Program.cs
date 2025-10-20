@@ -188,7 +188,7 @@ namespace CLI.ChartingSystem
             RACE race = raceInput switch
             {
                 "A" => RACE.Asian,
-                "B" => RACE.AfricanAmerican,
+                "B" => RACE.Black,
                 "C" => RACE.White,
                 "D" => RACE.Hispanic,
                 "E" => RACE.Other,
@@ -566,7 +566,7 @@ namespace CLI.ChartingSystem
                 RACE race = raceInput switch
                 {
                     "A" => RACE.Asian,
-                    "B" => RACE.AfricanAmerican,
+                    "B" => RACE.Black,
                     "C" => RACE.White,
                     "D" => RACE.Hispanic,
                     "E" => RACE.Other,
