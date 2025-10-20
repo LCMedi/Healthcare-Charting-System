@@ -117,7 +117,7 @@ namespace Library.ChartingSystem.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.AppendLine($"[{Id}]\t{Name ?? "N/A"}\t{Gender?.ToString() ?? "N/A"}\t\t{Birthdate:MM/dd/yyyy}\t{Race?.ToString() ?? "N/A"}\t\t{Address ?? "N/A"}");
+            sb.AppendLine($"[{Id}]\t{Name ?? "N/A"}\t\t{Gender?.ToString() ?? "N/A"}\t\t{Birthdate:MM/dd/yyyy}\t{Race?.ToString() ?? "N/A"}\t\t\t{Address ?? "N/A"}");
 
             if (MedicalHistory != null && MedicalHistory.Count > 0)
             {

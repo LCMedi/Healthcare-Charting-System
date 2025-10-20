@@ -93,6 +93,7 @@
             </ListView>
             <Button Text="Add Patient" Clicked="AddPatientClicked"/>
             <Button Text="Add Physician" Clicked="AddPhysicianClicked"/>
+            <Button Text="Add Appointment" Clicked="AddAppointmentClicked"/>
         </VerticalStackLayout>
     </ScrollView>
 

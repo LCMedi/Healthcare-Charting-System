@@ -44,7 +44,7 @@ namespace MAUI.ChartingSystem.ViewModels
             NotifyPropertyChanged("Appointments");
         }
 
-        public Appointment? SelectedAppointment { get; set; }
+        public AddAppointmentViewModel? SelectedAppointment { get; set; }
 
         public Patient? SelectedPatient { get; set; }
 
@@ -75,6 +75,11 @@ namespace MAUI.ChartingSystem.ViewModels
             }
             ChartServiceProxy.Current.RemovePhysician(SelectedPhysician);
             NotifyPropertyChanged(nameof(Physicians));
+        }
+
+        public void DeleteAppointment()
+        {
+            
         }
     }
 }

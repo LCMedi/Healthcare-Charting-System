@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.ChartingSystem.Views.AppointmentView"
+             Title="Appointment View"
+             NavigatedTo="ContentPage_NavigatedTo">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <Color x:Key="PrimaryColor">Teal</Color>
+      <Style x:Key="HeaderLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="Margin" Value="0,4,0,8"/>
+      </Style>
+      <Style x:Key="FieldLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="Margin" Value="0,6,0,0"/>
+      </Style>
+      <Style x:Key="PickerStyle" TargetType="Picker">
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="FontSize" Value="14"/>
+      </Style>
+      <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="TextColor" Value="White"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+      </Style>
+      <Style x:Key="SecondaryButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="BorderColor" Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="Padding" Value="10,8"/>
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <ScrollView>
+    <VerticalStackLayout Padding="20" Spacing="16">
+        <Label Text="Appointment Detail" Style="{StaticResource HeaderLabel}" />
+
+            <!--<Frame CornerRadius="10" Padding="12">-->
+        <Grid ColumnSpacing="16" RowSpacing="12">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <!-- Field labels -->
+          <Label Text="Patient" Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldLabel}" />
+          <Label Text="Physician" Grid.Row="0" Grid.Column="1" Style="{StaticResource FieldLabel}" />
+
+          <!-- Pickers -->
+          <Picker Title="Select a patient"
+                  ItemsSource="{Binding Patients}"
+                  SelectedItem="{Binding Patient}"
+                  Grid.Row="1" Grid.Column="0"
+                  Style="{StaticResource PickerStyle}" />
+          <Picker Title="Select a physician"
+                  ItemsSource="{Binding Physicians}"
+                  SelectedItem="{Binding Physician}"
+                  Grid.Row="1" Grid.Column="1"
+                  Style="{StaticResource PickerStyle}" />
+
+          <!-- Date/Time labels -->
+          <Label Text="Appointment Date" Grid.Row="2" Grid.Column="0" Style="{StaticResource FieldLabel}" />
+          <Label Text="Appointment Time" Grid.Row="2" Grid.Column="1" Style="{StaticResource FieldLabel}" />
+
+          <!-- Date & Time pickers -->
+          <DatePicker Date="{Binding Date}" Grid.Row="3" Grid.Column="0" HorizontalOptions="FillAndExpand" />
+          <TimePicker Time="{Binding Time}" Grid.Row="3" Grid.Column="1" HorizontalOptions="FillAndExpand" />
+
+          <!-- Action buttons -->
+          <HorizontalStackLayout Grid.Row="4" Grid.ColumnSpan="2" Spacing="12" HorizontalOptions="End">
+            <Button Text="Cancel" Clicked="CancelClicked" Style="{StaticResource SecondaryButton}" />
+            <Button Text="Save" Command="{Binding SaveAppointmentCommand}" Style="{StaticResource PrimaryButton}" />
+          </HorizontalStackLayout>
+        </Grid>
+      <!--</Frame>-->
+    </VerticalStackLayout>
+  </ScrollView>
+</ContentPage>

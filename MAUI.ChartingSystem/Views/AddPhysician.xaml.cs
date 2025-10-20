@@ -7,7 +7,7 @@ namespace MAUI.ChartingSystem.Views;
 [QueryProperty(nameof(PhysicianId), "physicianId")]
 public partial class PhysicianView : ContentPage
 {
-    private PhysicianViewModel? _viewModel;
+    private AddPhysicianViewModel? _viewModel;
     public int PhysicianId { get; set; }
     public PhysicianView()
 	{
@@ -18,14 +18,14 @@ public partial class PhysicianView : ContentPage
     {
         if (PhysicianId > 0)
         {
-            _viewModel = new PhysicianViewModel(PhysicianId);
+            _viewModel = new AddPhysicianViewModel(PhysicianId);
             BindingContext = _viewModel;
         }
         else
         {
             if (_viewModel is null)
             {
-                _viewModel = new PhysicianViewModel();
+                _viewModel = new AddPhysicianViewModel();
                 BindingContext = _viewModel;
             }
             else
@@ -51,7 +51,7 @@ public partial class PhysicianView : ContentPage
 
             if (!_viewModel.UpdatePatient(existing, out var error))
             {
-                await DisplayAlert("Invalid data", error, "OK");
+                await DisplayAlert("Error", error, "OK");
                 return;
             }
         }
@@ -59,7 +59,7 @@ public partial class PhysicianView : ContentPage
         {
             if (!_viewModel.CreatePhysician(out var physician, out var error))
             {
-                await DisplayAlert("Invalid data", error, "OK");
+                await DisplayAlert("Error", error, "OK");
                 return;
             }
 
