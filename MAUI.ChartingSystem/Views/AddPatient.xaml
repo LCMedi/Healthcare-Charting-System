@@ -3,65 +3,104 @@
              x:Class="MAUI.ChartingSystem.Views.PatientView"
              Title="PatientView"
              NavigatedTo="ContentPage_NavigatedTo">
+    
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
-            <Label Text="Name"/>
-            <Entry Placeholder="'John Smith'" Text="{Binding Name}"/>
-            
-            <Label Text="Address"/>
-            <Entry Placeholder="'123 Main St'" Text="{Binding Address}"/>
-            
-            <Label Text="Birthdate"/>
-            <DatePicker Date="{Binding Birthdate}"/>
-            
-            <Label Text="Select Race"/>
-            <Picker
-                    Title="Race"
-                    ItemsSource="{Binding Races}"
-                    SelectedItem="{Binding SelectedRace}"/>
+        <VerticalStackLayout Padding="20" Spacing="16">
+            <Label Text="Patient Detail" Style="{StaticResource HeaderLabel}" />
 
-            <Label Text="Select Gender"/>
-            <Picker
-                Title="Gender"
-                ItemsSource="{Binding Genders}"
-                SelectedItem="{Binding SelectedGender}"/>
-
-            <Label Text="Medical History" FontSize="24" HorizontalOptions="Center"/>
-            <VerticalStackLayout>
-                <Grid ColumnSpacing="10" RowSpacing="5">
+            <Frame CornerRadius="10" Padding="24">
+                <Grid ColumnSpacing="16" RowSpacing="12">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <!-- Header Row -->
-                    <Label Text="Date Created" Grid.Row="0" Grid.Column="0" HorizontalOptions="Center"/>
-                    <Label Text="Diagnosis" Grid.Row="0" Grid.Column="1" HorizontalOptions="Center"/>
-                    <Label Text="Prescription" Grid.Row="0" Grid.Column="2" HorizontalOptions="Center"/>
-                    <Label Text="Physician" Grid.Row="0" Grid.Column="3" HorizontalOptions="Center"/>
-                    <!-- Entry Row -->
-                    <DatePicker Date="{Binding NewNoteDate}" Grid.Row="1" Grid.Column="0" HorizontalOptions="Center"/>
-                    <Entry Placeholder="Diagnosis" Text="{Binding NewDiagnosis}" Grid.Row="1" Grid.Column="1"/>
-                    <Entry Placeholder="Prescription" Text="{Binding NewPrescription}" Grid.Row="1" Grid.Column="2"/>
-                    <Picker ItemsSource="{Binding Physicians}" SelectedItem="{Binding SelectedPhysician}" Grid.Row="1" Grid.Column="3"/>
-                </Grid>
-                <Button Text="Add Note" Command="{Binding AddMedicalNoteCommand}" />
-            </VerticalStackLayout>
-            <CollectionView ItemsSource="{Binding MedicalNotes}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Label Text="{Binding .}" />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                    
+                    <!--Field Labels-->
+                    <Label Text="Name" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource FieldLabel}"/>
+                    <Label Text="Address" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Style="{StaticResource FieldLabel}"/>
 
-            <Button Text="OK" Clicked="OkClicked"/>
-            <Button Text="Cancel" Clicked="CancelClicked"/>
+                    <!--Entry Fields-->
+                    <Entry Placeholder="John Smith" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Name}"/>
+                    <Entry Placeholder="123 Main St" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding Address}"/>
+
+                    <!--Field Labels-->
+                    <Label Text="Birthdate" Grid.Row="2" Grid.Column="0" Style="{StaticResource FieldLabel}"/>
+                    <Label Text="Race" Grid.Row="2" Grid.Column="1" Style="{StaticResource FieldLabel}"/>
+                    <Label Text="Gender" Grid.Row="2" Grid.Column="2" Style="{StaticResource FieldLabel}"/>
+
+                    <!--Pickers-->
+                    <DatePicker Date="{Binding Birthdate}" Grid.Row="3" Grid.Column="0" HorizontalOptions="FillAndExpand"/>
+                    <Picker
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Title="Select Race"
+                        ItemsSource="{Binding Races}"
+                        SelectedItem="{Binding SelectedRace}"
+                        Style="{StaticResource PickerStyle}"/>
+                    <Picker
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Title="Select Gender"
+                        ItemsSource="{Binding Genders}"
+                        SelectedItem="{Binding SelectedGender}"
+                        Style="{StaticResource PickerStyle}"/>
+
+                    <!--Medical History Section-->
+                    <Label Text="Medical History" FontSize="16" Grid.Row="4" Grid.ColumnSpan="4" HorizontalOptions="Center"/>
+
+                    <!-- Header Row -->
+                    <Label Text="Date Created" Grid.Row="5" Grid.Column="0" HorizontalOptions="Center"/>
+                    <Label Text="Diagnosis" Grid.Row="5" Grid.Column="1" HorizontalOptions="Center"/>
+                    <Label Text="Prescription" Grid.Row="5" Grid.Column="2" HorizontalOptions="Center"/>
+                    <Label Text="Physician" Grid.Row="5" Grid.Column="3" HorizontalOptions="Center"/>
+
+                    <!-- Entry Row -->
+                    <DatePicker Date="{Binding NewNoteDate}" Grid.Row="6" Grid.Column="0" HorizontalOptions="Center"/>
+                    <Entry Placeholder="Diagnosis" Text="{Binding NewDiagnosis}" Grid.Row="6" Grid.Column="1"/>
+                    <Entry Placeholder="Prescription" Text="{Binding NewPrescription}" Grid.Row="6" Grid.Column="2"/>
+                    <Picker 
+                        ItemsSource="{Binding Physicians}" 
+                        SelectedItem="{Binding SelectedPhysician}" 
+                        Grid.Row="6" 
+                        Grid.Column="3" 
+                        Style="{StaticResource PickerStyle}"/>
+                    <Button 
+                        Text="Add Note" 
+                        Grid.Row="7" 
+                        Grid.Column="3"
+                        Command="{Binding AddMedicalNoteCommand}" 
+                        Style="{StaticResource PrimaryButton}"/>
+
+                    <!--Medical Note List-->
+                    <CollectionView ItemsSource="{Binding MedicalNotes}" Grid.Row="8" Grid.ColumnSpan="4">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding .}" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <!--Action Buttons-->
+                    <HorizontalStackLayout Grid.Row="9" Grid.ColumnSpan="4" Spacing="12" HorizontalOptions="End">
+                        <Button Text="Cancel" Clicked="CancelClicked" Style="{StaticResource SecondaryButton}"/>
+                        <Button Text="Save" Clicked="OkClicked" Style="{StaticResource PrimaryButton}"/>
+                    </HorizontalStackLayout>
+                </Grid>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

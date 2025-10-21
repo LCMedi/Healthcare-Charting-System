@@ -6,32 +6,51 @@
              Title="PhysicianView"
              NavigatedTo="ContentPage_NavigatedTo">
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
-            <Label Text="Name"/>
-            <Entry Placeholder="Dr. Smith" Text="{Binding Name}"/>
+        <VerticalStackLayout Padding="20" Spacing="16">
+            <Label Text="Physician Detail" Style="{StaticResource HeaderLabel}" />
 
-            <Label Text="License Number"/>
-            <Entry Placeholder="ABC-12345" Text="{Binding LicenseNumber}"/>
-
-            <Label Text="Graduation Date"/>
-            <DatePicker Date="{Binding GraduationDate}"/>
-
-            <Label Text="Specializations"/>
-            <HorizontalStackLayout>
-                <Grid>
+            <Frame CornerRadius="10" Padding="24">
+                <Grid ColumnSpacing="16" RowSpacing="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Entry Placeholder="'Cardiology'" Text="{Binding NewSpec}" Grid.Column="0"/>
-                    <Button Text="Add Spec" Command="{Binding AddSpecCommand}" Grid.Column="1"/>
+
+                    <!--Field Labels-->
+                    <Label Text="Name" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Label Text="License Number" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"/>
+
+                    <!--Entry Fields-->
+                    <Entry Placeholder="Dr. Smith" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Name}"/>
+                    <Entry Placeholder="ABC-12345" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding LicenseNumber}"/>
+
+                    <!--Field Labels-->
+                    <Label Text="Graduation Date" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Label Text="Specializations" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"/>
+
+                    <!--Entry Fields-->
+                    <DatePicker Date="{Binding GraduationDate}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <Entry Placeholder="Cardiology" Text="{Binding NewSpec}" Grid.Row="3" Grid.Column="2"/>
+                    <Button Text="Add Spec" Command="{Binding AddSpecCommand}" Grid.Row="3" Grid.Column="3" Style="{StaticResource PrimaryButton}"/>
+
+                    <!--Action Buttons-->
+                    <HorizontalStackLayout Grid.Row="4" Grid.ColumnSpan="4" Spacing="12" HorizontalOptions="End">
+                        <Button Text="Cancel" Clicked="CancelClicked" Style="{StaticResource SecondaryButton}"/>
+                        <Button Text="Ok" Clicked="OkClicked" Style="{StaticResource PrimaryButton}"/>
+                    </HorizontalStackLayout>
                 </Grid>
-            </HorizontalStackLayout>
-            
-
-
-            <Button Text="Ok" Clicked="OkClicked"/>
-            <Button Text="Cancel" Clicked="CancelClicked"/>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

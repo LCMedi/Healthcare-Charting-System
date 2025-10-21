@@ -129,7 +129,7 @@ namespace MAUI.ChartingSystem.ViewModels
                 {
                     // Try Updating Appointment
                     ChartServiceProxy.Current.UpdateAppointment(_appointment, Patient, Physician, SelectedDateTime);
-                    Shell.Current.DisplayAlert("Success", "Appointment added successfully!", "OK");
+                    Shell.Current.DisplayAlert("Success", "Appointment updated successfully!", "OK");
                     Shell.Current.GoToAsync("//MainPage");
                 }
                 // If doing create
