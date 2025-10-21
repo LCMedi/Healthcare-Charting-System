@@ -22,11 +22,13 @@ public partial class AppointmentView : ContentPage
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
+        // If updating appointment
         if (AppointmentId > 0)
         {
             _viewModel = new AddAppointmentViewModel(AppointmentId);
             BindingContext = _viewModel;
         }
+        // If creating appointment
         else
         {
             if (_viewModel is null)

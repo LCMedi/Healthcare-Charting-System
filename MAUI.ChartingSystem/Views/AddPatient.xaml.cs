@@ -28,6 +28,7 @@ public partial class PatientView : ContentPage
         if (_viewModel is null)
             return;
 
+        // If updating patient
         if (PatientId > 0)
         {
             var existing = ChartServiceProxy.Current.GetPatient(PatientId);
@@ -43,6 +44,7 @@ public partial class PatientView : ContentPage
                 return;
             }
         }
+        // If creating patient
         else
         {
             if (!_viewModel.TryCreatePatient(out var patient, out var error))
@@ -59,12 +61,14 @@ public partial class PatientView : ContentPage
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
+        // If updating patient
         if (PatientId > 0)
         {
             _viewModel = new AddPatientViewModel(PatientId);
             _viewModel.Refresh();
             BindingContext = _viewModel;
         }
+        // If creating patient
         else
         {
             if (_viewModel is null)

@@ -93,6 +93,7 @@ namespace Library.ChartingSystem.Services
             if (appointment == null)
                 throw new ArgumentException("Appointment cannot be empty.");
 
+            // Grab appointment by Id
             var existing = Appointments.FirstOrDefault(x => x.Id == appointment.Id);
 
             if (existing == null)
@@ -118,7 +119,8 @@ namespace Library.ChartingSystem.Services
 
             var end = newStart.AddMinutes(30);
 
-            if (!IsTimeAvailable(physician, newStart, end, existing))
+            // Ignore existing appointment when rescheduling, so it doesn't conflict with itself
+            if (!IsTimeAvailable(physician, newStart, end, existing))   
                 throw new ArgumentException("There already exists an appointment with the given time.");
 
             existing.SetPatient(patient);
@@ -128,7 +130,7 @@ namespace Library.ChartingSystem.Services
             return existing;
         }
 
-        // Reschedule Appointment
+        // Update Appointment (only dateTime)
         public Appointment RescheduleAppointment(Appointment appointment, DateTime newTime)
         {
             if (appointment == null)
@@ -346,6 +348,7 @@ namespace Library.ChartingSystem.Services
                 && s < x.EndTime.Value);
         }
 
+        // Public refactored function version of CheckOverlapping. Returns true when the provided appointment overlaps an existing appointment.
         public bool IsTimeAvailable(Physician physician, DateTime start, DateTime end, Appointment? exclude = null)
         {
             if (physician == null)
@@ -354,7 +357,7 @@ namespace Library.ChartingSystem.Services
             if (end <= start)
                 throw new ArgumentException("End must be after start.", nameof(end));
 
-            // Overlap condition: existing.Start < new.End && new.Start < existing.End
+            // Overlap occurs when existing.start < new.end && new.start < existing.end
             var overlapExists = Appointments.Any(x =>
                 x.Physician == physician
                 && x != exclude
@@ -376,7 +379,7 @@ namespace Library.ChartingSystem.Services
             return IsTimeAvailable(physician, start, end, exclude);
         }
 
-        // Convenience overload that accepts patient
+        // Overload for patient.
         public bool IsTimeAvailable(Patient patient, Physician physician, DateTime start, int durationMinutes = 30, Appointment? exclude = null)
         {
             if (patient == null)

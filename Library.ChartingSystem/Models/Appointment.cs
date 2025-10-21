@@ -62,7 +62,6 @@ namespace Library.ChartingSystem.Models
 
         public override string ToString()
         {
-            // Use null-conditional and null-coalescing operators to avoid null dereference warnings
             var physicianName = Physician?.Name ?? "N/A";
             var patientName = Patient?.Name ?? "N/A";
             return $"[{Id}]\t{physicianName}\t\t{patientName}\t\tFrom: [{AppointmentDate:g}]\t To: [{EndTime:g}]";

@@ -16,11 +16,13 @@ public partial class PhysicianView : ContentPage
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
+        // If updating physician
         if (PhysicianId > 0)
         {
             _viewModel = new AddPhysicianViewModel(PhysicianId);
             BindingContext = _viewModel;
         }
+        // If creating physician
         else
         {
             if (_viewModel is null)
@@ -40,6 +42,7 @@ public partial class PhysicianView : ContentPage
         if (_viewModel is null)
             return;
 
+        // If updating physician
         if (PhysicianId > 0)
         {
             var existing = ChartServiceProxy.Current.GetPhysician(PhysicianId);
@@ -55,6 +58,7 @@ public partial class PhysicianView : ContentPage
                 return;
             }
         }
+        // If creating physician
         else
         {
             if (!_viewModel.CreatePhysician(out var physician, out var error))

@@ -13,6 +13,7 @@
                 Text="Healthcare Charting Management System"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
+            
             <!--Patients List View-->
             <Label Text="Patients" FontSize="24" HorizontalOptions="Center"/>
             <ListView
@@ -40,6 +41,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            
             <!--Physicians List View-->
             <Label Text="Physicians" FontSize="24" HorizontalOptions="Center"/>
             <ListView
@@ -67,6 +69,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            
             <!--Appointments List View-->
             <Label Text="Appointments" FontSize="24" HorizontalOptions="Center"/>
             <ListView
@@ -97,6 +100,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            
             <!--Add Buttons-->
             <Button Text="Add Patient" Clicked="AddPatientClicked"/>
             <Button Text="Add Physician" Clicked="AddPhysicianClicked"/>

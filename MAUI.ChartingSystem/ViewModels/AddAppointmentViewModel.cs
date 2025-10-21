@@ -127,7 +127,7 @@ namespace MAUI.ChartingSystem.ViewModels
                 // If doing update
                 if (_appointment != null)
                 {
-                    // Try Updating Appointment
+                    // Try updating appointment
                     ChartServiceProxy.Current.UpdateAppointment(_appointment, Patient, Physician, SelectedDateTime);
                     Shell.Current.DisplayAlert("Success", "Appointment updated successfully!", "OK");
                     Shell.Current.GoToAsync("//MainPage");
@@ -135,7 +135,7 @@ namespace MAUI.ChartingSystem.ViewModels
                 // If doing create
                 else
                 {
-                    // Try Adding Appointment
+                    // Try adding appointment
                     if (ChartServiceProxy.Current.IsTimeAvailable(Physician, SelectedDateTime))
                     {
                         ChartServiceProxy.Current.ScheduleAppointment(new Appointment(Patient, Physician, SelectedDateTime));
