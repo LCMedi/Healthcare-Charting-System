@@ -1,1 +1,1 @@
-# HC_ConsoleApp
+# Healthcare Charting Management System App
