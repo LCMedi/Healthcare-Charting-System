@@ -55,5 +55,10 @@ namespace MAUI.ChartingSystem
         {
             (BindingContext as MainViewModel)?.Refresh();
         }
+
+        private async void PatientsClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//Patients");
+        }
     }
 }
