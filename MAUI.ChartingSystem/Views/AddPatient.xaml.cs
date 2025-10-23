@@ -19,7 +19,7 @@ public partial class PatientView : ContentPage
 
     private void CancelClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//MainPage");
+        Shell.Current.GoToAsync("//Patients");
     }
 
 
@@ -56,7 +56,7 @@ public partial class PatientView : ContentPage
             ChartServiceProxy.Current.AddPatient(patient!);
         }
 
-        await Shell.Current.GoToAsync("//MainPage");
+        await Shell.Current.GoToAsync("//Patients");
     }
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)

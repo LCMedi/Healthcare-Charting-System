@@ -12,6 +12,10 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
     <ShellContent
+        Title="Patients View"
+        ContentTemplate="{DataTemplate view:Patients}"
+        Route="Patients" />
+    <ShellContent
         Title="PatientDetail"
         ContentTemplate="{DataTemplate view:PatientView}"
         Route="Patient" />
@@ -23,5 +27,4 @@
         Title="AppointmentDetail"
         ContentTemplate="{DataTemplate view:AppointmentView}"
         Route="Appointment" />
-    
 </Shell>
