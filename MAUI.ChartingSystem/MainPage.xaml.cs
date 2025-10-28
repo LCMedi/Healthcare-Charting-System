@@ -60,5 +60,10 @@ namespace MAUI.ChartingSystem
         {
             await Shell.Current.GoToAsync("//Patients");
         }
+
+        private async void PhysiciansClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//Physicians");
+        }
     }
 }

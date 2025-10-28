@@ -12,29 +12,30 @@ using System.Windows.Input;
 
 namespace MAUI.ChartingSystem.ViewModels
 {
-    public class PatientsViewModel : INotifyPropertyChanged
+    public class PhysiciansViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private Patient? _patient = null;
-        public ObservableCollection<Patient> Patients
+        private Physician? _physician = null;
+
+        public ObservableCollection<Physician> Physicians
         {
             get
             {
-                return new ObservableCollection<Patient>(ChartServiceProxy.Current.GetAllPatients());
+                return new ObservableCollection<Physician>(ChartServiceProxy.Current.GetAllPhysicians());
             }
         }
 
-        public PatientsViewModel()
+        public PhysiciansViewModel()
         {
         }
 
         public void Refresh()
         {
-            NotifyPropertyChanged(nameof(Patients));
+            NotifyPropertyChanged(nameof(Physicians));
         }
 
-        public ICommand? DeletePatientsClicked {  get; set; }
+        public ICommand? DeletePatientsClicked { get; set; }
         public ICommand? EditPatientsClicked { get; set; }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

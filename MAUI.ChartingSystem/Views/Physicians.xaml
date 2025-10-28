@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.ChartingSystem.Views.Physicians"
+             Title="Physicians"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="25">
+            <Label Text="Physicians Menu" FontSize="36" Style="{StaticResource HeaderLabel}" />
+            <Frame CornerRadius="10">
+                <StackLayout Spacing="24">
+                    <Label Text="Physicians List" FontSize="24" HorizontalOptions="Center"/>
+                    <ListView
+                        x:Name="PhysiciansListView"
+                        ItemsSource="{Binding Physicians}"
+                        SelectedItem="{Binding SelectedPhysician}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="5*"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Label Text="{Binding Display}" Grid.Column="0"/>
+                                        <Grid Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Text="Edit" Grid.Column="0" Style="{StaticResource SecondaryButton}"/>
+                                            <Button Text="Delete" Grid.Column="1" Style="{StaticResource PrimaryButton}"/>
+                                        </Grid>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </Frame>
+            <Grid ColumnSpacing="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Button Text="Back" Clicked="BackClicked" Grid.Column="0" Style="{StaticResource SecondaryButton}"/>
+                <Button Text="Add" Clicked="AddClicked" Grid.Column="1" Style="{StaticResource PrimaryButton}"/>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
