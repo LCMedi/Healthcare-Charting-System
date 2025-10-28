@@ -106,6 +106,7 @@
             <Button Text="Add Physician" Clicked="AddPhysicianClicked"/>
             <Button Text="Add Appointment" Clicked="AddAppointmentClicked"/>
             <Button Text="Patients" Clicked="PatientsClicked"/>
+            <Button Text="Physicians" Clicked="PhysiciansClicked"/>
         </VerticalStackLayout>
     </ScrollView>
 
