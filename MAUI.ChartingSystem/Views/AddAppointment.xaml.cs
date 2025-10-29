@@ -17,7 +17,7 @@ public partial class AppointmentView : ContentPage
 
     private void CancelClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//MainPage");
+        Shell.Current.GoToAsync("//Appointments");
     }
 
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)

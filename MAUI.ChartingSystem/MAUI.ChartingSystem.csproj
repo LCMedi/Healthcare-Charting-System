@@ -81,6 +81,9 @@
 	  <MauiXaml Update="Views\AddPhysician.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Appointments.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Patients.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
