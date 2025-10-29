@@ -35,8 +35,8 @@ namespace MAUI.ChartingSystem.ViewModels
             NotifyPropertyChanged(nameof(Physicians));
         }
 
-        public ICommand? DeletePatientsClicked { get; set; }
-        public ICommand? EditPatientsClicked { get; set; }
+        public ICommand? DeletePhysicianCommand { get; set; }
+        public ICommand? EditPhysicianCommand { get; set; }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
