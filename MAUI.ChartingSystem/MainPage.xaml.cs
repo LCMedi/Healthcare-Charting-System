@@ -13,47 +13,8 @@ namespace MAUI.ChartingSystem
             BindingContext = new MainViewModel();
         }
 
-        // Add Buttons Clicked Event Handlers
-
-        private void AddPatientClicked(object sender, EventArgs e)
-        {
-            Shell.Current.GoToAsync("//Patient?patientId=0");
-        }
-        private void AddPhysicianClicked(object sender, EventArgs e)
-        {
-            Shell.Current.GoToAsync("//Physician?physicianId=0");
-        }
-
-        private void AddAppointmentClicked(object sender, EventArgs e)
-        {
-            Shell.Current.GoToAsync("//Appointment?appointmentId=0");
-        }
-
-        // Edit Buttons Clicked Event Handlers
-        private void EditPatientClicked(object sender, EventArgs e)
-        {
-            var selectedId = (BindingContext as MainViewModel)?.SelectedPatient?.Id ?? 0;
-            Shell.Current.GoToAsync($"//Patient?patientId={selectedId}");
-        }
-        private void EditPhysiciansClicked(object sender, EventArgs e)
-        {
-            var selectedId = (BindingContext as MainViewModel)?.SelectedPhysician?.Id ?? 0;
-            Shell.Current.GoToAsync($"//Physician?physicianId={selectedId}");
-        }
-
-        // Delete Buttons Clicked Event Handlers
-        private void DeletePatientClicked(object sender, EventArgs e)
-        {
-            (BindingContext as MainViewModel)?.DeletePatient();
-        }
-        private void DeletePhysiciansClicked(object sender, EventArgs e)
-        {
-            (BindingContext as MainViewModel)?.DeletePhysician();
-        }
-
         private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
         {
-            (BindingContext as MainViewModel)?.Refresh();
         }
 
         private async void PatientsClicked(object sender, EventArgs e)

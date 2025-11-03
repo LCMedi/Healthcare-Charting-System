@@ -12,8 +12,7 @@
                     <Label Text="Physicians List" FontSize="24" HorizontalOptions="Center"/>
                     <ListView
                         x:Name="PhysiciansListView"
-                        ItemsSource="{Binding Physicians}"
-                        SelectedItem="{Binding SelectedPhysician}">
+                        ItemsSource="{Binding Physicians}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
