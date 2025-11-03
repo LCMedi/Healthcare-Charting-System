@@ -70,11 +70,11 @@ public partial class PhysicianView : ContentPage
             ChartServiceProxy.Current.AddPhysician(physician!);
         }
 
-        await Shell.Current.GoToAsync("//MainPage");
+        await Shell.Current.GoToAsync("//Physicians");
     }
 
     private void CancelClicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync("//MainPage");
+        Shell.Current.GoToAsync("//Physicians");
     }
 }

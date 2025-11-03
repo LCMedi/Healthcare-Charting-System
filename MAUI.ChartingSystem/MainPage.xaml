@@ -12,99 +12,19 @@
             <Label
                 Text="Healthcare Charting Management System"
                 Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
-            
-            <!--Patients List View-->
-            <Label Text="Patients" FontSize="24" HorizontalOptions="Center"/>
-            <ListView
-                ItemsSource="{Binding Patients}"
-                SelectedItem="{Binding SelectedPatient}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Display}" Grid.Column="0"/>
-                                <Grid Grid.Column="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Clicked="EditPatientClicked" Text="Edit" Grid.Column="0"/>
-                                    <Button Clicked="DeletePatientClicked" Text="Delete" Grid.Column="1"/>
-                                </Grid>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            
-            <!--Physicians List View-->
-            <Label Text="Physicians" FontSize="24" HorizontalOptions="Center"/>
-            <ListView
-                ItemsSource="{Binding Physicians}"
-                SelectedItem="{Binding SelectedPhysician}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Display}" Grid.Column="0"/>
-                                <Grid Grid.Column="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Clicked="EditPhysiciansClicked" Text="Edit" Grid.Column="0"/>
-                                    <Button Clicked="DeletePhysiciansClicked" Text="Delete" Grid.Column="1"/>
-                                </Grid>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            
-            <!--Appointments List View-->
-            <Label Text="Appointments" FontSize="24" HorizontalOptions="Center"/>
-            <ListView
-                x:Name="AppointmentsListView"
-                ItemsSource="{Binding Appointments}"
-                SelectedItem="{Binding SelectedAppointment}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5*"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Display}" Grid.Column="0"/>
-                                <Grid Grid.Column="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Command="{Binding BindingContext.EditAppointmentCommand, Source={x:Reference Name=AppointmentsListView}}"
-                                            CommandParameter="{Binding .}" Text="Edit" Grid.Column="0"/>
-                                    <Button Command="{Binding BindingContext.DeleteAppointmentCommand, Source={x:Reference Name=AppointmentsListView}}" 
-                                            CommandParameter="{Binding .}" Text="Delete" Grid.Column="1"/>
-                                </Grid>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            
-            <!--Add Buttons-->
-            <Button Text="Add Patient" Clicked="AddPatientClicked"/>
-            <Button Text="Add Physician" Clicked="AddPhysicianClicked"/>
-            <Button Text="Add Appointment" Clicked="AddAppointmentClicked"/>
+                SemanticProperties.HeadingLevel="Level1"/>
+            <Frame CornerRadius="10">
+                <StackLayout Spacing="25" Padding="30,0">
+                    <Label Text="Navigation Menu" FontSize="24" HorizontalOptions="Center"/>
+                    <!--Navigation Menus-->
+                    <Button Text="Patients" WidthRequest="520" Style="{StaticResource PrimaryButton}"
+                            Clicked="PatientsClicked"/>
+                    <Button Text="Physicians" WidthRequest="520" Style="{StaticResource PrimaryButton}"
+                            Clicked="PhysiciansClicked"/>
+                    <Button Text="Appointments" WidthRequest="520" Style="{StaticResource PrimaryButton}"
+                            Clicked="AppointmentsClicked"/>
+                </StackLayout>
+            </Frame>
         </VerticalStackLayout>
     </ScrollView>
 
