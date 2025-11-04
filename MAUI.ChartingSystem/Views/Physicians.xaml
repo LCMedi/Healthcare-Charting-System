@@ -28,7 +28,8 @@
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
                                             <Button Text="Edit" Grid.Column="0" Style="{StaticResource SecondaryButton}"/>
-                                            <Button Text="Delete" Grid.Column="1" Style="{StaticResource PrimaryButton}"/>
+                                            <Button Command="{Binding BindingContext.DeletePhysicianCommand, Source={x:Reference Name=PhysiciansListView}}"
+                                                CommandParameter="{Binding .}" Text="Delete" Grid.Column="1" Style="{StaticResource PrimaryButton}"/>
                                         </Grid>
                                     </Grid>
                                 </ViewCell>

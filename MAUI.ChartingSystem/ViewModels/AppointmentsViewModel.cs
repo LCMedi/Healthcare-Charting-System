@@ -51,8 +51,10 @@ namespace MAUI.ChartingSystem.ViewModels
             bool confirm = await App.Current.MainPage.DisplayAlert("Confirm", $"Delete {appointment.Display}?", "Yes", "No");
 
             if (confirm)
+            {
                 ChartServiceProxy.Current.CancelAppointment(appointment);
-            NotifyPropertyChanged(nameof(Appointments));
+                NotifyPropertyChanged(nameof(Appointments));
+            }
         }
 
         private async Task EditAppointment(Appointment appointment)
