@@ -91,7 +91,6 @@ namespace MAUI.ChartingSystem.ViewModels
             }
         }
 
-        public ICommand? EditAppointmentCommand { get; set; }
         public ICommand? SaveAppointmentCommand { get; set; }
 
         // Constructor for Creates

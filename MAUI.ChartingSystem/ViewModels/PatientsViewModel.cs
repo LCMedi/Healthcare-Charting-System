@@ -41,6 +41,7 @@ namespace MAUI.ChartingSystem.ViewModels
         private void SetUpCommands()
         {
             DeletePatientCommand = new Command<Patient>(async (patient) => await DeletePatient(patient));
+            EditPatientCommand = new Command<Patient>(async (patient) => await EditPatient(patient));
         }
 
         private async Task DeletePatient(Patient patient)
@@ -55,6 +56,14 @@ namespace MAUI.ChartingSystem.ViewModels
                 ChartServiceProxy.Current.RemovePatient(patient);
                 NotifyPropertyChanged(nameof(Patients));
             }
+        }
+
+        private async Task EditPatient(Patient patient)
+        {
+            if (patient == null)
+                return;
+
+            await Shell.Current.GoToAsync($"//Patient?patientId={patient.Id}");
         }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

@@ -12,6 +12,8 @@ namespace MAUI.ChartingSystem.ViewModels
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        private Physician? _physician = null;
+
         private string _name = string.Empty;
         private string _licenseNumber = string.Empty;
         private DateTime _graduationDate = DateTime.Now;
@@ -50,13 +52,69 @@ namespace MAUI.ChartingSystem.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public ICommand AddSpecCommand { get; set; }
+        public ICommand? AddSpecCommand { get; set; }
+        public ICommand? SavePhysicianCommand { get; set; }
 
+        // Constructor for Creates
         public AddPhysicianViewModel()
         {
-            AddSpecCommand = new Command(AddSpec);
+            SetUpCommands();
         }
 
+        // Constructor for Updates
+        public AddPhysicianViewModel(int id) : this()
+        {
+            _physician = ChartServiceProxy.Current.GetPhysician(id);
+            if (_physician == null)
+                return;
+
+            Name = _physician.Name ?? string.Empty;
+            LicenseNumber = _physician.LicenseNumber ?? string.Empty;
+            GraduationDate = _physician.graduationDate ?? DateTime.Today;
+            Specializations = _physician.Specializations ?? string.Empty;
+
+            SetUpCommands();
+        }
+
+        private void SetUpCommands()
+        {
+            AddSpecCommand = new Command(_ => AddSpec());
+            SavePhysicianCommand = new Command(async _ => await DoSave());
+        }
+
+        private async Task DoSave()
+        {
+            try
+            {
+                // If updating
+                if (_physician != null)
+                {
+                    // Try updating physician
+                    _physician.SetName(Name);
+                    _physician.SetLicenseNumber(LicenseNumber);
+                    _physician.SetGraduationDate(GraduationDate);
+                    _physician.Specializations = Specializations;
+                    await Shell.Current.DisplayAlert("Success", "Physician updated successfully!", "OK");
+                    await Shell.Current.GoToAsync("//Physicians");
+                }
+                // If creating
+                else
+                {
+                    // Try adding physician
+                    ChartServiceProxy.Current.AddPhysician(new Physician(Name, LicenseNumber, GraduationDate, Specializations));
+                    await Shell.Current.DisplayAlert("Success", "Physician added successfully!", "OK");
+                    await Shell.Current.GoToAsync("//Physicians");
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
+            }
+        }
         public void AddSpec()
         {
             var spec = NewSpec?.Trim();
@@ -71,76 +129,13 @@ namespace MAUI.ChartingSystem.ViewModels
             NewSpec = string.Empty;
         }
 
-        public AddPhysicianViewModel(int id) : this()
-        {
-            var physician = ChartServiceProxy.Current.GetPhysician(id);
-            if (physician is null)
-                return;
-
-            Name = physician.Name ?? string.Empty;
-            LicenseNumber = physician.LicenseNumber ?? string.Empty;
-            GraduationDate = physician.graduationDate ?? DateTime.Today;
-            Specializations = physician.Specializations ?? string.Empty;
-        }
-
-
         public void Reset()
         {
+            _physician = null;
             Name = string.Empty;
             LicenseNumber = string.Empty;
             GraduationDate = DateTime.Today;
             Specializations = string.Empty;
-        }
-
-        private Physician MakePhysician()
-        {
-            var physician = new Physician(Name, LicenseNumber, GraduationDate, Specializations);
-            return physician;
-        }
-
-        public bool CreatePhysician(out Physician? physician, out string error)
-        {
-            try
-            {
-                physician = MakePhysician();
-                error = string.Empty;
-                return true;
-            }
-            catch (ArgumentException ex)
-            {
-                physician = null;
-                error = ex.Message;
-                return false;
-            }
-            catch (Exception ex)
-            {
-                physician = null;
-                error = ex.Message;
-                return false;
-            }
-        }
-
-        public bool UpdatePatient(Physician existing, out string error)
-        {
-            try
-            {
-                existing.SetName(Name);
-                existing.SetLicenseNumber(LicenseNumber);
-                existing.SetGraduationDate(GraduationDate);
-                existing.Specializations = Specializations;
-                error = string.Empty;
-                return true;
-            }
-            catch (ArgumentException ex)
-            {
-                error = ex.Message;
-                return false;
-            }
-            catch (Exception ex)
-            {
-                error = ex.Message;
-                return false;
-            }
         }
     }
 }
