@@ -13,7 +13,10 @@ public partial class PhysicianView : ContentPage
 	{
 		InitializeComponent();
 	}
-
+    private void CancelClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("//Physicians");
+    }
     private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
         // If updating physician
@@ -35,11 +38,5 @@ public partial class PhysicianView : ContentPage
                 _viewModel.Reset();
             }
         }
-    }
-
-
-    private void CancelClicked(object sender, EventArgs e)
-    {
-        Shell.Current.GoToAsync("//Physicians");
     }
 }

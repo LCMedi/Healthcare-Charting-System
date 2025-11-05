@@ -115,7 +115,7 @@ namespace MAUI.ChartingSystem.ViewModels
                 await Shell.Current.DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
             }
         }
-        public void AddSpec()
+        private void AddSpec()
         {
             var spec = NewSpec?.Trim();
             if (string.IsNullOrWhiteSpace(spec))
