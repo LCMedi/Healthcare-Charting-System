@@ -27,7 +27,8 @@
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
-                                            <Button Text="Edit" Grid.Column="0" Style="{StaticResource SecondaryButton}"/>
+                                            <Button Command="{Binding BindingContext.EditPatientCommand, Source={x:Reference Name=PatientsListView}}"
+                                                    CommandParameter="{Binding .}" Text="Edit" Grid.Column="0" Style="{StaticResource SecondaryButton}"/>
                                             <Button Command="{Binding BindingContext.DeletePatientCommand, Source={x:Reference Name=PatientsListView}}"
                                                     CommandParameter="{Binding .}" Text="Delete" Grid.Column="1" Style="{StaticResource PrimaryButton}"/>
                                         </Grid>

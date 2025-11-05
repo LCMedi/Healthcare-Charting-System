@@ -13,6 +13,8 @@ namespace MAUI.ChartingSystem.ViewModels;
 
 public class AddPatientViewModel : INotifyPropertyChanged
 {
+    private Patient? _patient = null;
+
     private string _name = string.Empty;
     private string _address = string.Empty;
     private DateTime _birthdate = DateTime.Today;
@@ -25,7 +27,13 @@ public class AddPatientViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ObservableCollection<Physician> Physicians { get; } = new ObservableCollection<Physician>();
+    public ObservableCollection<Physician> Physicians
+    {
+        get
+        {
+            return new ObservableCollection<Physician>(ChartServiceProxy.Current.GetAllPhysicians());
+        }
+    }
 
     public string Name
     {
@@ -87,38 +95,90 @@ public class AddPatientViewModel : INotifyPropertyChanged
 
     public ObservableCollection<MedicalNote> MedicalNotes { get; } = new();
 
-    public ICommand AddMedicalNoteCommand { get; }
+    public ICommand? AddMedicalNoteCommand { get; set; }
+    public ICommand? SavePatientCommand { get; set; }
 
+    // Constructor for Creates
     public AddPatientViewModel()
     {
         _selectedRace = Races.FirstOrDefault();
         _selectedGender = Genders.FirstOrDefault();
 
-        AddMedicalNoteCommand = new Command(AddMedicalNote);
-
-        ReloadPhysicians();
+        SetUpCommands();
     }
 
+    // Constructor for Updates
     public AddPatientViewModel(int id) : this()
     {
-        var patient = ChartServiceProxy.Current.GetPatient(id);
-        if (patient is null)
+        _patient = ChartServiceProxy.Current.GetPatient(id);
+        if (_patient is null)
             return;
 
-        Name = patient.Name ?? string.Empty;
-        Address = patient.Address ?? string.Empty;
-        Birthdate = patient.Birthdate ?? DateTime.Today;
-        SelectedRace = patient.Race ?? Races.FirstOrDefault();
-        SelectedGender = patient.Gender ?? Genders.FirstOrDefault();
+        Name = _patient.Name ?? string.Empty;
+        Address = _patient.Address ?? string.Empty;
+        Birthdate = _patient.Birthdate ?? DateTime.Today;
+        SelectedRace = _patient.Race ?? Races.FirstOrDefault();
+        SelectedGender = _patient.Gender ?? Genders.FirstOrDefault();
 
         MedicalNotes.Clear();
-        foreach (var note in patient.MedicalHistory)
+        foreach (var note in _patient.MedicalHistory)
             MedicalNotes.Add(note);
 
         NewNoteDate = DateTime.Today;
         NewDiagnosis = string.Empty;
         NewPrescription = string.Empty;
         SelectedPhysician = null;
+
+        SetUpCommands();
+    }
+
+    private void SetUpCommands()
+    {
+        AddMedicalNoteCommand = new Command(AddMedicalNote);
+        SavePatientCommand = new Command(async _ => await DoSave());
+    }
+
+    private async Task DoSave()
+    {
+        try
+        {
+            // If updating
+            if (_patient != null)
+            {
+                _patient.SetName(Name);
+                _patient.SetAddress(Address);
+                _patient.SetBirthdate(Birthdate);
+                _patient.SetRace(SelectedRace);
+                _patient.SetGender(SelectedGender);
+
+                _patient.MedicalHistory.Clear();
+                foreach (var note in MedicalNotes)
+                    _patient.MedicalHistory.Add(note);
+                await Shell.Current.DisplayAlert("Success", "Patient updated successfully!", "OK");
+                await Shell.Current.GoToAsync("//Patients");
+            }
+            // If creating
+            else
+            {
+                // Try adding patient
+                _patient = new Patient(Name, Birthdate, SelectedRace, SelectedGender, Address);
+
+                foreach (var note in MedicalNotes)
+                    _patient.MedicalHistory.Add(note);
+
+                ChartServiceProxy.Current.AddPatient(_patient);
+                await Shell.Current.DisplayAlert("Success", "Patient added successfully!", "OK");
+                await Shell.Current.GoToAsync("//Patients");
+            }
+        }
+        catch (ArgumentException ex)
+        {
+            await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+        }
+        catch (Exception ex)
+        {
+            await Shell.Current.DisplayAlert("Error", $"Something went wrong: {ex.Message}", "OK");
+        }
     }
 
     public void AddMedicalNote()
@@ -133,69 +193,9 @@ public class AddPatientViewModel : INotifyPropertyChanged
         }
     }
 
-    public Patient ToPatient()
-    {
-        var patient = new Patient(Name, Birthdate, SelectedRace, SelectedGender, Address);
-
-        foreach (var note in MedicalNotes)
-            patient.MedicalHistory.Add(note);
-
-        return patient;
-    }
-
-    public bool TryCreatePatient(out Patient? patient, out string error)
-    {
-        try
-        {
-            patient = ToPatient();
-            error = string.Empty;
-            return true;
-        }
-        catch (ArgumentException ex)
-        {
-            patient = null;
-            error = ex.Message;
-            return false;
-        }
-        catch (Exception ex)
-        {
-            patient = null;
-            error = ex.Message;
-            return false;
-        }
-    }
-
-    public bool TryUpdateExistingPatient(Patient existing, out string error)
-    {
-        try
-        {
-            existing.SetName(Name);
-            existing.SetAddress(Address);
-            existing.SetBirthdate(Birthdate);
-            existing.SetRace(SelectedRace);
-            existing.SetGender(SelectedGender);
-
-            existing.MedicalHistory.Clear();
-            foreach (var note in MedicalNotes)
-                existing.MedicalHistory.Add(note);
-
-            error = string.Empty;
-            return true;
-        }
-        catch (ArgumentException ex)
-        {
-            error = ex.Message;
-            return false;
-        }
-        catch (Exception ex)
-        {
-            error = ex.Message;
-            return false;
-        }
-    }
-
     public void Reset()
     {
+        _patient = null;
         Name = string.Empty;
         Address = string.Empty;
         Birthdate = DateTime.Today;
@@ -206,21 +206,6 @@ public class AddPatientViewModel : INotifyPropertyChanged
         NewDiagnosis = string.Empty;
         NewPrescription = string.Empty;
         SelectedPhysician = null;
-    }
-
-    public void ReloadPhysicians()
-    {
-        var list = ChartServiceProxy.Current.GetAllPhysicians() ?? new List<Physician>();
-        Physicians.Clear();
-        foreach (var p in list)
-            Physicians.Add(p);
-
-        OnPropertyChanged(nameof(Physicians));
-    }
-
-    public void Refresh()
-    {
-        ReloadPhysicians();
     }
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)

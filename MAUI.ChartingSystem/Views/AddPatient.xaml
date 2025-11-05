@@ -97,7 +97,7 @@
                     <!--Action Buttons-->
                     <HorizontalStackLayout Grid.Row="9" Grid.ColumnSpan="4" Spacing="12" HorizontalOptions="End">
                         <Button Text="Cancel" Clicked="CancelClicked" Style="{StaticResource SecondaryButton}"/>
-                        <Button Text="Save" Clicked="OkClicked" Style="{StaticResource PrimaryButton}"/>
+                        <Button Text="Save" Command="{Binding SavePatientCommand}" Style="{StaticResource PrimaryButton}"/>
                     </HorizontalStackLayout>
                 </Grid>
             </Frame>
