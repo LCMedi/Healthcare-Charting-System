@@ -7,12 +7,15 @@
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="25">
             <Label Text="Physicians Menu" FontSize="36" Style="{StaticResource HeaderLabel}" />
+            <SearchBar
+                Placeholder="Enter Physician Name"
+                Text="{Binding PhysicianSearchText}"/>
             <Frame CornerRadius="10">
                 <StackLayout Spacing="24">
                     <Label Text="Physicians List" FontSize="24" HorizontalOptions="Center"/>
                     <ListView
                         x:Name="PhysiciansListView"
-                        ItemsSource="{Binding Physicians}">
+                        ItemsSource="{Binding FilteredPhysicians}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
