@@ -18,22 +18,47 @@ namespace MAUI.ChartingSystem.ViewModels
 
         private Physician? _physician = null;
 
-        public ObservableCollection<Physician> Physicians
+        public ObservableCollection<Physician> AllPhysicians { get; set; } = new();
+
+        public ObservableCollection<Physician> FilteredPhysicians { get; set; } = new();
+
+        private string _physicianSearchText;
+        public string PhysicianSearchText
         {
-            get
+            get => _physicianSearchText;
+            set
             {
-                return new ObservableCollection<Physician>(ChartServiceProxy.Current.GetAllPhysicians());
+                if (_physicianSearchText != value)
+                {
+                    _physicianSearchText = value;
+                    NotifyPropertyChanged();
+                    FilterPhysicians();
+                }
             }
         }
 
         public PhysiciansViewModel()
         {
+            LoadPhysicians();
             SetUpCommands();
         }
 
+        public void LoadPhysicians()
+        {
+            AllPhysicians.Clear();
+            var data = ChartServiceProxy.Current.GetAllPhysicians();
+
+            foreach (var p in data)
+                AllPhysicians.Add(p);
+
+            FilterPhysicians();
+        }
+
+
+
         public void Refresh()
         {
-            NotifyPropertyChanged(nameof(Physicians));
+            LoadPhysicians();
         }
 
         public ICommand? DeletePhysicianCommand { get; set; }
@@ -44,7 +69,20 @@ namespace MAUI.ChartingSystem.ViewModels
             DeletePhysicianCommand = new Command<Physician>(async (physician) => await DeletePhysician(physician));
             EditPhysicianCommand = new Command<Physician>(async (physician) => await EditPhysician(physician));
         }
+        private void FilterPhysicians()
+        {
+            string query = PhysicianSearchText?.ToLower() ?? "";
 
+            var results = AllPhysicians
+                .Where(p => string.IsNullOrEmpty(query)
+                || p.Name.ToLower().Contains(query))
+                .ToList();
+
+            FilteredPhysicians.Clear();
+
+            foreach (var p in results)
+                FilteredPhysicians.Add(p);
+        }
         private async Task DeletePhysician(Physician physician)
         {
             if (physician == null)
@@ -55,7 +93,7 @@ namespace MAUI.ChartingSystem.ViewModels
             if (confirm)
             {
                 ChartServiceProxy.Current.RemovePhysician(physician);
-                NotifyPropertyChanged(nameof(Physicians));
+                Refresh();
             }
         }
 
