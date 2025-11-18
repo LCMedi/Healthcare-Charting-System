@@ -15,32 +15,75 @@ namespace MAUI.ChartingSystem.ViewModels
     public class AppointmentsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
+        public ObservableCollection<Appointment> AllAppointments { get; set; } = new();
 
-        public ObservableCollection<Appointment> Appointments
+        public ObservableCollection<Appointment> FilteredAppointments { get; set; } = new();
+
+        private string _appointmentSearchText;
+        public string AppointmentSearchText
         {
-            get
+            get => _appointmentSearchText;
+            set
             {
-                return new ObservableCollection<Appointment>(ChartServiceProxy.Current.GetAllAppointments());
+                if (_appointmentSearchText != value)
+                {
+                    _appointmentSearchText = value;
+                    NotifyPropertyChanged();
+                    FilterAppointments();
+                }
             }
         }
 
         public AppointmentsViewModel()
         {
+            LoadAppointments();
             SetUpCommands();
         }
 
         public ICommand? DeleteAppointmentCommand { get; set; }
         public ICommand? EditAppointmentCommand { get; set; }
 
+        public void LoadAppointments()
+        {
+            AllAppointments.Clear();
+            var data = ChartServiceProxy.Current.GetAllAppointments();
+
+            foreach (var a in data)
+            {
+                AllAppointments.Add(a);
+            }
+
+            FilterAppointments();
+        }
+
         public void Refresh()
         {
-            NotifyPropertyChanged(nameof(Appointments));
+            LoadAppointments();
         }
 
         private void SetUpCommands()
         {
             DeleteAppointmentCommand = new Command<Appointment>(async (appt) => await DeleteAppointment(appt));
             EditAppointmentCommand = new Command<Appointment>(async (appt) => await EditAppointment(appt));
+        }
+
+        private void FilterAppointments()
+        {
+            string query = AppointmentSearchText?.ToLower() ?? string.Empty;
+
+            var results = AllAppointments
+                .Where(a =>
+                    string.IsNullOrEmpty(query) ||
+                    a.Patient?.Name.ToLower().Contains(query) == true ||
+                    a.Physician?.Name.ToLower().Contains(query) == true)
+                .ToList();
+
+            FilteredAppointments.Clear();
+
+            foreach (var a in results)
+            {
+                FilteredAppointments.Add(a);
+            }
         }
 
         private async Task DeleteAppointment(Appointment appointment)
@@ -53,7 +96,7 @@ namespace MAUI.ChartingSystem.ViewModels
             if (confirm)
             {
                 ChartServiceProxy.Current.CancelAppointment(appointment);
-                NotifyPropertyChanged(nameof(Appointments));
+                Refresh();
             }
         }
 

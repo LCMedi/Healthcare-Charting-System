@@ -7,12 +7,15 @@
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="25">
             <Label Text="Appointments Menu" FontSize="36" Style="{StaticResource HeaderLabel}" />
+            <SearchBar
+                Placeholder="Search by Patient or Physician"
+                Text="{Binding AppointmentSearchText}"/>
             <Frame CornerRadius="10">
                 <StackLayout Spacing="24">
                     <Label Text="Appointments List" FontSize="24" HorizontalOptions="Center"/>
                     <ListView
                     x:Name="AppointmentsListView"
-                    ItemsSource="{Binding Appointments}">
+                    ItemsSource="{Binding FilteredAppointments}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
