@@ -17,31 +17,72 @@ namespace MAUI.ChartingSystem.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private Patient? _patient = null;
-        public ObservableCollection<Patient> Patients
+
+        public ObservableCollection<Patient> AllPatients { get; set; } = new();
+
+        public ObservableCollection<Patient> FilteredPatients { get; set; } = new();
+
+        private string _patientSearchText;
+        public string PatientSearchText
         {
-            get
+            get => _patientSearchText;
+            set
             {
-                return new ObservableCollection<Patient>(ChartServiceProxy.Current.GetAllPatients());
+                if (_patientSearchText != value)
+                {
+                    _patientSearchText = value;
+                    NotifyPropertyChanged();
+                    FilterPatients();
+                }
             }
         }
 
         public PatientsViewModel()
         {
+            LoadPatients();
             SetUpCommands();
+        }
+
+        public void LoadPatients()
+        {
+            AllPatients.Clear();
+            var data = ChartServiceProxy.Current.GetAllPatients();
+
+            foreach (var p in data)
+                AllPatients.Add(p);
+
+            FilterPatients();
         }
 
         public void Refresh()
         {
-            NotifyPropertyChanged(nameof(Patients));
+            LoadPatients();
         }
 
         public ICommand? DeletePatientCommand {  get; set; }
         public ICommand? EditPatientCommand { get; set; }
 
+        public ICommand? FilterPatientCommand { get; set; }
+
         private void SetUpCommands()
         {
             DeletePatientCommand = new Command<Patient>(async (patient) => await DeletePatient(patient));
             EditPatientCommand = new Command<Patient>(async (patient) => await EditPatient(patient));
+        }
+
+        private void FilterPatients()
+        {
+            string query = PatientSearchText?.ToLower() ?? "";
+
+            var results = AllPatients
+                .Where(p => string.IsNullOrEmpty(query)
+                || p.Name.ToLower().Contains(query))
+                .ToList();
+
+            FilteredPatients.Clear();
+
+            foreach (var p in results)
+                FilteredPatients.Add(p);
         }
 
         private async Task DeletePatient(Patient patient)
@@ -54,7 +95,7 @@ namespace MAUI.ChartingSystem.ViewModels
             if (confirm)
             {
                 ChartServiceProxy.Current.RemovePatient(patient);
-                NotifyPropertyChanged(nameof(Patients));
+                Refresh();
             }
         }
 
@@ -65,6 +106,8 @@ namespace MAUI.ChartingSystem.ViewModels
 
             await Shell.Current.GoToAsync($"//Patient?patientId={patient.Id}");
         }
+
+
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
