@@ -25,6 +25,10 @@
                             Clicked="AppointmentsClicked"/>
                 </StackLayout>
             </Frame>
+            <HorizontalStackLayout HorizontalOptions="End">
+                <Button Text="Export" Style="{StaticResource PrimaryButton}"/>
+                <Button Text="Import" Style="{StaticResource PrimaryButton}"/>
+            </HorizontalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 
