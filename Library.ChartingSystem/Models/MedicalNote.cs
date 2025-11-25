@@ -8,11 +8,16 @@ namespace Library.ChartingSystem.Models
 {
     public class MedicalNote
     {
+        public int Id { get; set; }
         public DateTime DateCreated { get; private set; }
         public string Diagnosis {  get; set; }
         public string Prescription { get; set; }
-        public Physician CreatedBy { get; private set; }
+        public int PhysicianId { get; private set; }
+        public Physician CreatedBy { get; private set; } = default!;
 
+        public MedicalNote() { }
+
+        //[Obsolete("Use AddMedicalNote instead. Not for EF.", true)]
         public MedicalNote(DateTime date,  string diagnosis, string prescription, Physician physician)
         {
             if (date > DateTime.Now)
@@ -22,6 +27,7 @@ namespace Library.ChartingSystem.Models
             this.Diagnosis = diagnosis;
             this.Prescription = prescription;
             this.CreatedBy = physician;
+            PhysicianId = physician.Id;
         }
 
         public string Display

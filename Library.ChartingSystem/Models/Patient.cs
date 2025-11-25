@@ -27,9 +27,7 @@ namespace Library.ChartingSystem.Models
     }
     public class Patient
     {
-        private static int idCounter = 1;
-
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string? Name { get; private set; } = string.Empty;
         public string? Address { get; private set; } = string.Empty;
         public DateTime? Birthdate { get; private set; }
@@ -49,7 +47,6 @@ namespace Library.ChartingSystem.Models
             SetGender(gender);
             SetAddress(address ?? string.Empty);
 
-            this.Id = idCounter++;
             this.MedicalHistory = new List<MedicalNote>();
         }
 
