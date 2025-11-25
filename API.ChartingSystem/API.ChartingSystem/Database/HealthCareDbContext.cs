@@ -9,6 +9,8 @@ namespace API.ChartingSystem.Database
         {
         }
 
-        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Patient> Patients { get; set; } = null!;
+        public DbSet<MedicalNote> MedicalNotes { get; set; } = null!;
+
     }
 }
