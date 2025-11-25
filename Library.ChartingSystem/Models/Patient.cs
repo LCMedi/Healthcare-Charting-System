@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Library.ChartingSystem.DTO;
+using Library.ChartingSystem.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -9,7 +11,7 @@ using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Library.ChartingSystem.Models
-{   
+{
     public enum RACE
     {
         Asian,
@@ -25,14 +27,13 @@ namespace Library.ChartingSystem.Models
         Female,
         Other
     }
+
     public class Patient
     {
-        private static int idCounter = 1;
-
         public int Id { get; private set; }
         public string? Name { get; private set; } = string.Empty;
         public string? Address { get; private set; } = string.Empty;
-        public DateTime? Birthdate { get; private set; }
+        public DateTime Birthdate { get; private set; }
         public RACE? Race { get; private set; }
         public GENDER? Gender { get; private set; }
         public List<MedicalNote> MedicalHistory { get; private set; } = new();
@@ -48,9 +49,27 @@ namespace Library.ChartingSystem.Models
             SetRace(race);
             SetGender(gender);
             SetAddress(address ?? string.Empty);
+            MedicalHistory = new List<MedicalNote>();
+        }
 
-            this.Id = idCounter++;
-            this.MedicalHistory = new List<MedicalNote>();
+        public Patient(PatientDTO dto)
+        {
+            Id = dto.Id;
+            Name = dto.Name;
+            Address = dto.Address;
+            Birthdate = dto.Birthdate;
+            Race = RaceConverter.ConvertRace(dto.Race);
+            Gender = GenderConverter.ConvertGender(dto.Gender);
+
+            foreach (var noteDto in dto.MedicalHistory)
+            {
+                MedicalHistory.Add(new MedicalNote(
+                    noteDto.DateCreated,
+                    noteDto.Diagnosis,
+                    noteDto.Prescription,
+                    null
+                ));
+            }
         }
 
         public void SetName(string name)
@@ -60,16 +79,12 @@ namespace Library.ChartingSystem.Models
             Name = name;
         }
 
-        public void SetAddress(string address)
-        {
-            Address = address;
-        }
+        public void SetAddress(string address) => Address = address;
 
         public void SetBirthdate(DateTime date)
         {
             if (date > DateTime.Now)
                 throw new ArgumentException("Birthdate cannot be in the future.");
-
             Birthdate = date;
         }
 
@@ -77,7 +92,6 @@ namespace Library.ChartingSystem.Models
         {
             if (!Enum.IsDefined(typeof(RACE), race))
                 throw new ArgumentException("Specified race is not valid.");
-
             Race = race;
         }
 
@@ -85,7 +99,6 @@ namespace Library.ChartingSystem.Models
         {
             if (!Enum.IsDefined(typeof(GENDER), gender))
                 throw new ArgumentException("Specified gender is not valid.");
-
             Gender = gender;
         }
 
@@ -119,7 +132,7 @@ namespace Library.ChartingSystem.Models
             var sb = new StringBuilder();
             sb.AppendLine($"[{Id}]\t{Name ?? "N/A"}\t\t{Gender?.ToString() ?? "N/A"}\t\t{Birthdate:MM/dd/yyyy}\t{Race?.ToString() ?? "N/A"}\t\t\t{Address ?? "N/A"}");
 
-            if (MedicalHistory != null && MedicalHistory.Count > 0)
+            if (MedicalHistory is { Count: > 0 })
             {
                 sb.AppendLine("Medical History:");
                 foreach (var note in MedicalHistory)
@@ -135,6 +148,5 @@ namespace Library.ChartingSystem.Models
 
             return sb.ToString().TrimEnd();
         }
-
-    }
+    };
 }

@@ -260,7 +260,7 @@ namespace CLI.ChartingSystem
 
             try
             {
-                manager.AddPhysician(new Physician(name, licenseNumber, graduationDate, specializations));
+                manager.AddPhysician(new Physician(name, licenseNumber, graduationDate, ""));
                 Console.WriteLine("Physician added successfully.");
             }
             catch (ArgumentException ex)
@@ -291,7 +291,8 @@ namespace CLI.ChartingSystem
             try
             {
                 manager.GetPhysician(phyId);
-            } catch (ArgumentException ex)
+            }
+            catch (ArgumentException ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
                 return;
@@ -375,7 +376,7 @@ namespace CLI.ChartingSystem
                 Console.WriteLine($"Error: {ex.Message}");
                 return;
             }
-            
+
             var patient = manager.GetPatient(patId);
 
             try
@@ -418,7 +419,7 @@ namespace CLI.ChartingSystem
                 Console.WriteLine($"Error: {ex.Message}");
                 return;
             }
-            
+
             var physician = manager.GetPhysician(phyId);
 
             try
@@ -873,7 +874,7 @@ namespace CLI.ChartingSystem
         }
         static void Main(string[] args)
         {
-            var chartManager = new ChartServiceProxy();
+            var chartManager = ChartServiceProxy.Current;
             string? input = "";
 
             do
