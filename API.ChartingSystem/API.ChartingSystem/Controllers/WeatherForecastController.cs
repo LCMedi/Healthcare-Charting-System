@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.ChartingSysteem.Controllers
+namespace API.ChartingSystem.Controllers
 {
     [ApiController]
     [Route("[controller]")]

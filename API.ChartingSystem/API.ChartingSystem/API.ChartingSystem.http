@@ -1,0 +1,6 @@
+@API.ChartingSystem_HostAddress = http://localhost:5062
+
+GET {{API.ChartingSystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

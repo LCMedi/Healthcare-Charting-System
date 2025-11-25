@@ -1,4 +1,4 @@
-namespace API.ChartingSysteem
+namespace API.ChartingSystem
 {
     public class WeatherForecast
     {
