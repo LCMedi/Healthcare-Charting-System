@@ -10,10 +10,24 @@ public partial class Patients : ContentPage
 		InitializeComponent();
 	}
 
-    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    /*private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
     {
 		_viewModel = new PatientsViewModel();
 		BindingContext = _viewModel;
+    }*/
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is not PatientsViewModel vm)
+        {
+            _viewModel = new PatientsViewModel();
+            BindingContext = _viewModel;
+            vm = _viewModel;
+        }
+
+        await vm.LoadPatients();
     }
 
     private async void BackClicked(object sender, EventArgs e)

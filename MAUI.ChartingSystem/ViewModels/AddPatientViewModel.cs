@@ -110,13 +110,14 @@ public class AddPatientViewModel : INotifyPropertyChanged
     // Constructor for Updates
     public AddPatientViewModel(int id) : this()
     {
-        _patient = ChartServiceProxy.Current.GetPatient(id);
+        _patient = PatientServiceProxy.Current.Patients.FirstOrDefault(x => x.Id == id);
+
         if (_patient is null)
             return;
 
         Name = _patient.Name ?? string.Empty;
         Address = _patient.Address ?? string.Empty;
-        Birthdate = _patient.Birthdate ?? DateTime.Today;
+        Birthdate = _patient.Birthdate;
         SelectedRace = _patient.Race ?? Races.FirstOrDefault();
         SelectedGender = _patient.Gender ?? Genders.FirstOrDefault();
 

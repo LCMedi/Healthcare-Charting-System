@@ -10,7 +10,7 @@ namespace Library.eCommerce.Utilities
     public class WebRequestHandler
     {
         private string host = "localhost";
-        private string port = "7009";
+        private string port = "7186";
         private HttpClient Client { get; }
         public WebRequestHandler()
         {
@@ -92,6 +92,59 @@ namespace Library.eCommerce.Utilities
                         }
                     }
                 }
+            }
+        }
+        public async Task<string> Put(string url, object obj)
+        {
+            var fullUrl = $"https://{host}:{port}{url}";
+            var json = JsonConvert.SerializeObject(obj);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                using (var client = new HttpClient())
+                using (var request = new HttpRequestMessage(HttpMethod.Put, fullUrl))
+                {
+                    request.Content = content;
+                    using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+                    {
+                        if (response.IsSuccessStatusCode)
+                            return await response.Content.ReadAsStringAsync();
+
+                        return "ERROR";
+                    }
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<string> Patch(string url, object obj)
+        {
+            var fullUrl = $"https://{host}:{port}{url}";
+            var json = JsonConvert.SerializeObject(obj);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            try
+            {
+                using (var client = new HttpClient())
+                using (var request = new HttpRequestMessage(new HttpMethod("PATCH"), fullUrl))
+                {
+                    request.Content = content;
+                    using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+                    {
+                        if (response.IsSuccessStatusCode)
+                            return await response.Content.ReadAsStringAsync();
+
+                        return "ERROR";
+                    }
+                }
+            }
+            catch
+            {
+                return null;
             }
         }
     }
