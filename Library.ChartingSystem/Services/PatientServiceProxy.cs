@@ -66,6 +66,36 @@ namespace Library.ChartingSystem.Services
             return Patients;
         }
 
+        // Delete Patient
+        public async Task<Patient> Delete(Patient patient)
+        {
+            if (patient == null)
+                throw new ArgumentException("Patient cannot be empty.");
+
+            var existing = Patients.FirstOrDefault(p => p?.Id == patient.Id);
+            if (existing == null)
+                throw new ArgumentException("Patient not found in the system.");
+
+            // Remove all appointments associated with this patient
+            /*var appointments = Appointments.Where(x => x.Patient == patient).ToList();
+
+            foreach (var appointment in appointments)
+                Appointments.Remove(appointment);*/
+
+            var deletedDto = await DeleteAsync(patient.Id);
+
+            Patients.Remove(existing);
+
+            // Remove from DTO cache too
+            var cachedDto = _patients.FirstOrDefault(p => p?.Id == patient.Id);
+            if (cachedDto != null)
+            {
+                _patients.Remove(cachedDto);
+            }
+
+            return new Patient(deletedDto ?? new PatientDTO(patient));
+        }
+
         public async Task<List<PatientDTO>> GetAllAsync()
         {
             var response = await new WebRequestHandler().Get($"{baseUrl}");
@@ -80,7 +110,6 @@ namespace Library.ChartingSystem.Services
             return patients;
         }
 
-
         public async Task<PatientDTO> GetByIdAsync(int id)
         {
             var json = await new WebRequestHandler().Get($"{baseUrl}/{id}");
@@ -93,7 +122,6 @@ namespace Library.ChartingSystem.Services
             if (dto == null)
                 return _patients.FirstOrDefault(p => p?.Id == id);
 
-            // Update cache
             var existing = _patients.FirstOrDefault(p => p?.Id == id);
 
             if (existing != null)
@@ -107,6 +135,19 @@ namespace Library.ChartingSystem.Services
             }
 
             return dto;
+        }
+
+        public async Task<PatientDTO?> DeleteAsync(int id)
+        {
+            var response = await new WebRequestHandler().Delete($"{baseUrl}/{id}");
+
+            if (string.IsNullOrWhiteSpace(response))
+            {
+                return _patients.FirstOrDefault(p => p?.Id == id);
+            }
+
+            var dto = JsonConvert.DeserializeObject<PatientDTO>(response);
+            return dto ?? _patients.FirstOrDefault(p => p?.Id == id);
         }
     }
 }
