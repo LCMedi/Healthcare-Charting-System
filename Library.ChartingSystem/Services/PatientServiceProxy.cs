@@ -96,6 +96,25 @@ namespace Library.ChartingSystem.Services
             return new Patient(deletedDto ?? new PatientDTO(patient));
         }
 
+        // Create Patient
+        public async Task<Patient> Add(Patient patient)
+        {
+            if (patient == null)
+                throw new ArgumentException("Patient cannot be empty.");
+
+            var newDto = await AddAsync(new PatientDTO(patient));
+
+            if (newDto == null)
+                throw new Exception("Failure creating patient on server. Please try again later.");
+
+            _patients.Add(newDto);
+
+            var newPatient = new Patient(newDto);
+            Patients.Add(newPatient);
+
+            return newPatient;
+        }
+
         public async Task<List<PatientDTO>> GetAllAsync()
         {
             var response = await new WebRequestHandler().Get($"{baseUrl}");
@@ -141,13 +160,27 @@ namespace Library.ChartingSystem.Services
         {
             var response = await new WebRequestHandler().Delete($"{baseUrl}/{id}");
 
-            if (string.IsNullOrWhiteSpace(response))
+            if (string.IsNullOrWhiteSpace(response) || response == "ERROR")
             {
                 return _patients.FirstOrDefault(p => p?.Id == id);
             }
 
             var dto = JsonConvert.DeserializeObject<PatientDTO>(response);
             return dto ?? _patients.FirstOrDefault(p => p?.Id == id);
+        }
+
+        public async Task<PatientDTO?> AddAsync(PatientDTO dto)
+        {
+            if (dto == null) return null;
+
+            var response = await new WebRequestHandler().Post($"{baseUrl}", dto);
+
+            if (string.IsNullOrWhiteSpace(response) || response == "ERROR")
+                return null;
+
+            var dtoFromServer = JsonConvert.DeserializeObject<PatientDTO>(response);
+
+            return dtoFromServer;
         }
     }
 }
