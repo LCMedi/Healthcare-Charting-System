@@ -110,7 +110,7 @@ namespace MAUI.ChartingSystem.ViewModels
 
             if (confirm)
             {
-                ChartServiceProxy.Current.RemovePatient(patient);
+                await PatientServiceProxy.Current.Delete(patient);
                 Refresh();
             }
         }
