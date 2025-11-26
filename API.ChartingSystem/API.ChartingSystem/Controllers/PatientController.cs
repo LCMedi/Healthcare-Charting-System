@@ -22,14 +22,14 @@ namespace API.ChartingSystem.Controllers
             _patientEC = patientEC;
         }
 
-        // GET: api/patients
+        // GET: api/patient
         [HttpGet]
         public ActionResult<List<PatientDTO>> Get()
         {
             return Ok(_patientEC.Get());
         }
 
-        // GET: api/patients/id
+        // GET: api/patient/id
         [HttpGet("{id}")]
         public ActionResult<List<PatientDTO>> GetById(int id)
         {
@@ -41,7 +41,7 @@ namespace API.ChartingSystem.Controllers
             return Ok(patient);
         }
 
-        // POST: api/patients/
+        // POST: api/patient
         [HttpPost]
         public ActionResult<PatientDTO> Create([FromBody] PatientDTO dto)
         {
@@ -52,7 +52,7 @@ namespace API.ChartingSystem.Controllers
             return CreatedAtAction(nameof(GetById), new { id = patient.Id }, patient);
         }
 
-        // PUT: api/patients/id
+        // PUT: api/patient/id
         [HttpPut("{id}")]
         public ActionResult<PatientDTO> Update(int id, [FromBody] PatientDTO dto)
         {
@@ -65,7 +65,7 @@ namespace API.ChartingSystem.Controllers
             return Ok(patient);
         }
 
-        // PATCH: api/patients/id
+        // PATCH: api/patient/id
         [HttpPatch("{id}")]
         public ActionResult<PatientDTO> Patch(int id, [FromBody] PatientUpdateDTO dto)
         {
@@ -75,7 +75,7 @@ namespace API.ChartingSystem.Controllers
             return Ok(patient);
         }
 
-        // DELETE: api/patients/id
+        // DELETE: api/patient/id
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
