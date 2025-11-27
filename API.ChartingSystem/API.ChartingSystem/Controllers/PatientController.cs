@@ -1,7 +1,7 @@
 ﻿using API.ChartingSystem.Database;
 using API.ChartingSystem.Enterprise;
 using Library.ChartingSystem.DTO;
-using Library.ChartingSystem.Models;
+using Library.ChartingSystem.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -81,6 +81,13 @@ namespace API.ChartingSystem.Controllers
         {
             if (!_patientEC.Delete(id)) return NotFound();
             return NoContent();
+        }
+
+        // POST: api/patient/search
+        [HttpPost("search")]
+        public IEnumerable<PatientDTO?> Search([FromBody] QueryRequest query)
+        {
+            return _patientEC.Search(query.Content ?? string.Empty);
         }
     }
 }
