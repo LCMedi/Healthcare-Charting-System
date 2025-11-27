@@ -64,6 +64,11 @@ namespace MAUI.ChartingSystem.ViewModels
 
                 FilterPatients();
             }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", $"Failed to load patients. Please try again later.", "OK");
+                await Shell.Current.GoToAsync("//MainPage");
+            }
             finally
             {
                 IsBusy = false;

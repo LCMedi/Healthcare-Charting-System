@@ -42,6 +42,7 @@ namespace Library.ChartingSystem.Services
 
         public List<Patient> Patients { get; } = new();
 
+        // Get Patient by ID
         public async Task<Patient> GetById(int id)
         {
             if (id <= 0)
@@ -52,6 +53,7 @@ namespace Library.ChartingSystem.Services
             return new Patient(dto);
         }
 
+        // Get All Patients
         public async Task<List<Patient>> GetAll()
         {
             var dtos = await GetAllAsync();
@@ -107,14 +109,48 @@ namespace Library.ChartingSystem.Services
             if (newDto == null)
                 throw new Exception("Failure creating patient on server. Please try again later.");
 
+            // Add to DTO cache
             _patients.Add(newDto);
 
+            // Add to local cache
             var newPatient = new Patient(newDto);
             Patients.Add(newPatient);
 
             return newPatient;
         }
 
+        // Update Patient
+        public async Task<Patient> Update(Patient patient)
+        {
+            if (patient == null)
+                throw new ArgumentException("Patient cannot be empty.");
+
+            var existing = Patients.FirstOrDefault(p => p?.Id == patient.Id);
+
+            if (existing == null)
+                throw new ArgumentException("Patient not found in the system.");
+
+            var updatedDto = await UpdateAsync(new PatientDTO(patient));
+
+            if (updatedDto == null)
+                throw new Exception("Failure updating patient on server. Please try again later.");
+
+            // Update local cache
+            var index = Patients.IndexOf(existing);
+            Patients[index] = new Patient(updatedDto);
+
+            // Update DTO cache too
+            var cachedDto = _patients.FirstOrDefault(p => p?.Id == patient.Id);
+            if (cachedDto != null)
+            {
+                var dtoIndex = _patients.IndexOf(cachedDto);
+                _patients[dtoIndex] = updatedDto;
+            }
+
+            return Patients[index];
+        }
+
+        // Get All Patients Async
         public async Task<List<PatientDTO>> GetAllAsync()
         {
             var response = await new WebRequestHandler().Get($"{baseUrl}");
@@ -129,6 +165,7 @@ namespace Library.ChartingSystem.Services
             return patients;
         }
 
+        // Get Patient by ID Async
         public async Task<PatientDTO> GetByIdAsync(int id)
         {
             var json = await new WebRequestHandler().Get($"{baseUrl}/{id}");
@@ -156,6 +193,7 @@ namespace Library.ChartingSystem.Services
             return dto;
         }
 
+        // Delete Patient Async
         public async Task<PatientDTO?> DeleteAsync(int id)
         {
             var response = await new WebRequestHandler().Delete($"{baseUrl}/{id}");
@@ -169,11 +207,27 @@ namespace Library.ChartingSystem.Services
             return dto ?? _patients.FirstOrDefault(p => p?.Id == id);
         }
 
+        // Add Patient Async
         public async Task<PatientDTO?> AddAsync(PatientDTO dto)
         {
             if (dto == null) return null;
 
             var response = await new WebRequestHandler().Post($"{baseUrl}", dto);
+
+            if (string.IsNullOrWhiteSpace(response) || response == "ERROR")
+                return null;
+
+            var dtoFromServer = JsonConvert.DeserializeObject<PatientDTO>(response);
+
+            return dtoFromServer;
+        }
+
+        // Update Patient Async
+        public async Task<PatientDTO?> UpdateAsync(PatientDTO dto)
+        {
+            if (dto == null) return null;
+
+            var response = await new WebRequestHandler().Put($"{baseUrl}/{dto.Id}", dto);
 
             if (string.IsNullOrWhiteSpace(response) || response == "ERROR")
                 return null;
