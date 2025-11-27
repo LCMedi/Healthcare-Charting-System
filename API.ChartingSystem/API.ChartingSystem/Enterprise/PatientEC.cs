@@ -15,6 +15,7 @@ namespace API.ChartingSystem.Enterprise
             _db = db;
         }
 
+        // GET: All
         public List<PatientDTO> Get()
         {
             var patients = _db.Patients
@@ -25,6 +26,7 @@ namespace API.ChartingSystem.Enterprise
             return patients.Select(x => new PatientDTO(x)).ToList();
         }
 
+        // GET: By Id
         public PatientDTO? GetById(int id)
         {
             var patient = _db.Patients
@@ -37,6 +39,7 @@ namespace API.ChartingSystem.Enterprise
             return new PatientDTO(patient);
         }
 
+        // POST: Create
         public PatientDTO Add(PatientDTO patientDTO)
         {
             if (patientDTO == null) return null;
@@ -49,13 +52,14 @@ namespace API.ChartingSystem.Enterprise
             return new PatientDTO(patient);
         }
 
+        // PUT: Full Update
         public PatientDTO Update(PatientDTO patientDTO)
         {
             if (patientDTO == null) return null;
 
             var patient = _db.Patients
-                .Include (x => x.MedicalHistory)
-                .FirstOrDefault(x => x.Id ==  patientDTO.Id);
+                .Include(x => x.MedicalHistory)
+                .FirstOrDefault(x => x.Id == patientDTO.Id);
 
             if (patient == null) return null;
 
@@ -85,6 +89,7 @@ namespace API.ChartingSystem.Enterprise
             return new PatientDTO(patient);
         }
 
+        // PATCH: Partial Update
         public PatientDTO? PartialUpdate(int id, PatientUpdateDTO patientDTO)
         {
             if (patientDTO == null) return null;
@@ -118,6 +123,7 @@ namespace API.ChartingSystem.Enterprise
             return new PatientDTO(patient);
         }
 
+        // DELETE: By Id
         public bool Delete(int id)
         {
             var patient = _db.Patients.Find(id);
