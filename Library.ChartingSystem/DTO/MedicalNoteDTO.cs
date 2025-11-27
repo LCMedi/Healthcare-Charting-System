@@ -15,7 +15,7 @@ namespace Library.ChartingSystem.DTO
         public string Diagnosis { get; set; } = String.Empty;
         public string Prescription { get; set; } = String.Empty;
         public int? PhysicianId { get; set; }
-        public string? PhysicianName { get; set; }
+        public string? PhysicianName { get; set; } = String.Empty;
 
         public MedicalNoteDTO() { }
 
@@ -26,6 +26,9 @@ namespace Library.ChartingSystem.DTO
             Diagnosis = note.Diagnosis;
             Prescription = note.Prescription;
             PhysicianId = note.PhysicianId;
+            PhysicianName = PhysicianId.HasValue
+                ? ChartServiceProxy.Current.GetPhysician(PhysicianId.Value)?.Name ?? String.Empty
+                : String.Empty;
         }
 
         public string Display

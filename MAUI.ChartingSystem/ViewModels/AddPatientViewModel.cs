@@ -110,13 +110,14 @@ public class AddPatientViewModel : INotifyPropertyChanged
     // Constructor for Updates
     public AddPatientViewModel(int id) : this()
     {
-        _patient = ChartServiceProxy.Current.GetPatient(id);
+        _patient = PatientServiceProxy.Current.Patients.FirstOrDefault(x => x.Id == id);
+
         if (_patient is null)
             return;
 
         Name = _patient.Name ?? string.Empty;
         Address = _patient.Address ?? string.Empty;
-        Birthdate = _patient.Birthdate ?? DateTime.Today;
+        Birthdate = _patient.Birthdate;
         SelectedRace = _patient.Race ?? Races.FirstOrDefault();
         SelectedGender = _patient.Gender ?? Genders.FirstOrDefault();
 
@@ -154,6 +155,8 @@ public class AddPatientViewModel : INotifyPropertyChanged
                 _patient.MedicalHistory.Clear();
                 foreach (var note in MedicalNotes)
                     _patient.MedicalHistory.Add(note);
+
+                await PatientServiceProxy.Current.Update(_patient);
                 await Shell.Current.DisplayAlert("Success", "Patient updated successfully!", "OK");
                 await Shell.Current.GoToAsync("//Patients");
             }
@@ -166,7 +169,7 @@ public class AddPatientViewModel : INotifyPropertyChanged
                 foreach (var note in MedicalNotes)
                     _patient.MedicalHistory.Add(note);
 
-                ChartServiceProxy.Current.AddPatient(_patient);
+                await PatientServiceProxy.Current.Add(_patient);
                 await Shell.Current.DisplayAlert("Success", "Patient added successfully!", "OK");
                 await Shell.Current.GoToAsync("//Patients");
             }

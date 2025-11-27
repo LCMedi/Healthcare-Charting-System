@@ -36,7 +36,8 @@ namespace Library.ChartingSystem.DTO
 
         public PatientDTO(int id)
         {
-            var patientCopy = ChartServiceProxy.Current.GetPatient(id);
+            var patientCopyTask = PatientServiceProxy.Current.GetById(id);
+            var patientCopy = patientCopyTask is Task<Patient?> task ? task.GetAwaiter().GetResult() : null;
 
             if (patientCopy != null)
             {

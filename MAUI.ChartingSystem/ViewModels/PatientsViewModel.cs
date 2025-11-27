@@ -37,26 +37,47 @@ namespace MAUI.ChartingSystem.ViewModels
             }
         }
 
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            private set { _isBusy = value; NotifyPropertyChanged(); }
+        }
+
         public PatientsViewModel()
         {
-            LoadPatients();
+            //LoadPatients();
             SetUpCommands();
         }
 
-        public void LoadPatients()
+        public async Task LoadPatients()
         {
-            AllPatients.Clear();
-            var data = ChartServiceProxy.Current.GetAllPatients();
+            try
+            {
+                IsBusy = true;
 
-            foreach (var p in data)
-                AllPatients.Add(p);
+                AllPatients.Clear();
 
-            FilterPatients();
+                var data = await PatientServiceProxy.Current.GetAll() ?? new List<Patient>();
+                foreach (var patient in data)
+                    AllPatients.Add(patient);
+
+                FilterPatients();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", $"Failed to load patients. Please try again later.", "OK");
+                await Shell.Current.GoToAsync("//MainPage");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
-        public void Refresh()
+        public async void Refresh()
         {
-            LoadPatients();
+            await LoadPatients();
         }
 
         public ICommand? DeletePatientCommand {  get; set; }
@@ -76,7 +97,7 @@ namespace MAUI.ChartingSystem.ViewModels
 
             var results = AllPatients
                 .Where(p => string.IsNullOrEmpty(query)
-                || p.Name.ToLower().Contains(query))
+                || (p.Name?.ToLower().Contains(query) ?? false))
                 .ToList();
 
             FilteredPatients.Clear();
@@ -94,7 +115,7 @@ namespace MAUI.ChartingSystem.ViewModels
 
             if (confirm)
             {
-                ChartServiceProxy.Current.RemovePatient(patient);
+                await PatientServiceProxy.Current.Delete(patient);
                 Refresh();
             }
         }
