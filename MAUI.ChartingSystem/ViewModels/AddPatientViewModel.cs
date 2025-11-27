@@ -155,6 +155,8 @@ public class AddPatientViewModel : INotifyPropertyChanged
                 _patient.MedicalHistory.Clear();
                 foreach (var note in MedicalNotes)
                     _patient.MedicalHistory.Add(note);
+
+                await PatientServiceProxy.Current.Update(_patient);
                 await Shell.Current.DisplayAlert("Success", "Patient updated successfully!", "OK");
                 await Shell.Current.GoToAsync("//Patients");
             }
