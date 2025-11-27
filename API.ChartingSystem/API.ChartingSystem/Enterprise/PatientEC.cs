@@ -1,4 +1,5 @@
 ﻿using API.ChartingSystem.Database;
+using Library.ChartingSystem.Data;
 using Library.ChartingSystem.DTO;
 using Library.ChartingSystem.Models;
 using Library.ChartingSystem.Utilities;
@@ -134,6 +135,16 @@ namespace API.ChartingSystem.Enterprise
             _db.SaveChanges();
 
             return true;
+        }
+
+        // POST: Search
+        public IEnumerable<PatientDTO?> Search(string query)
+        {
+            var upperQuery = (query ?? string.Empty).ToUpper();
+            return _db.Patients
+                .Where(p => p.Name != null && p.Name.ToUpper().Contains(upperQuery))
+                .Select(p => new PatientDTO(p))
+                .ToList();
         }
     }
 }

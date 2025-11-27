@@ -1,4 +1,5 @@
-﻿using Library.ChartingSystem.DTO;
+﻿using Library.ChartingSystem.Data;
+using Library.ChartingSystem.DTO;
 using Library.ChartingSystem.Models;
 using Library.eCommerce.Utilities;
 using Newtonsoft.Json;
@@ -150,6 +151,22 @@ namespace Library.ChartingSystem.Services
             return Patients[index];
         }
 
+        public async Task<List<Patient>> Search(string query)
+        {
+            var dtos = await SearchAsync(new QueryRequest(query));
+
+            _patients = dtos;
+
+            Patients.Clear();
+
+            foreach (var dto in _patients)
+            {
+                Patients.Add(new Patient(dto));
+            }
+
+            return Patients;
+        }
+
         // Get All Patients Async
         public async Task<List<PatientDTO>> GetAllAsync()
         {
@@ -234,6 +251,15 @@ namespace Library.ChartingSystem.Services
 
             var dtoFromServer = JsonConvert.DeserializeObject<PatientDTO>(response);
 
+            return dtoFromServer;
+        }
+
+        public async Task<List<PatientDTO>> SearchAsync(QueryRequest query)
+        {
+            var response = await new WebRequestHandler().Post($"{baseUrl}/search", query);
+            
+            var dtoFromServer = JsonConvert.DeserializeObject<List<PatientDTO>>(response) ?? new List<PatientDTO>();
+            
             return dtoFromServer;
         }
     }

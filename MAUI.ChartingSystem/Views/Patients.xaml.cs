@@ -39,4 +39,12 @@ public partial class Patients : ContentPage
     {
         await Shell.Current.GoToAsync("//Patient?patientId=0");
     }
+
+    private async void SearchBar_SearchButtonPressed(object sender, EventArgs e)
+    {
+        if (BindingContext is PatientsViewModel vm)
+        {
+            await vm.ExecuteSearchAsync();
+        }
+    }
 }

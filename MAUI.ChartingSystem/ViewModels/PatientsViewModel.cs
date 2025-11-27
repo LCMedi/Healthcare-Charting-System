@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -18,22 +16,19 @@ namespace MAUI.ChartingSystem.ViewModels
 
         private Patient? _patient = null;
 
-        public ObservableCollection<Patient> AllPatients { get; set; } = new();
+        public ObservableCollection<Patient> AllPatients { get; } = new();
+        public ObservableCollection<Patient> FilteredPatients { get; } = new();
 
-        public ObservableCollection<Patient> FilteredPatients { get; set; } = new();
-
-        private string _patientSearchText;
-        public string PatientSearchText
+        private string _searchQuery;
+        public string SearchQuery
         {
-            get => _patientSearchText;
+            get => _searchQuery;
             set
             {
-                if (_patientSearchText != value)
-                {
-                    _patientSearchText = value;
-                    NotifyPropertyChanged();
-                    FilterPatients();
-                }
+                if (_searchQuery == value)
+                    return;
+                _searchQuery = value;
+                NotifyPropertyChanged();
             }
         }
 
@@ -46,7 +41,6 @@ namespace MAUI.ChartingSystem.ViewModels
 
         public PatientsViewModel()
         {
-            //LoadPatients();
             SetUpCommands();
         }
 
@@ -57,16 +51,15 @@ namespace MAUI.ChartingSystem.ViewModels
                 IsBusy = true;
 
                 AllPatients.Clear();
-
                 var data = await PatientServiceProxy.Current.GetAll() ?? new List<Patient>();
                 foreach (var patient in data)
                     AllPatients.Add(patient);
 
-                FilterPatients();
+                ReplaceFiltered(AllPatients);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                await App.Current.MainPage.DisplayAlert("Error", $"Failed to load patients. Please try again later.", "OK");
+                await App.Current.MainPage.DisplayAlert("Error", "Failed to load patients. Please try again later.", "OK");
                 await Shell.Current.GoToAsync("//MainPage");
             }
             finally
@@ -77,32 +70,59 @@ namespace MAUI.ChartingSystem.ViewModels
 
         public async void Refresh()
         {
-            await LoadPatients();
+            if (string.IsNullOrWhiteSpace(SearchQuery))
+                await LoadPatients();
+            else
+                await ExecuteSearchAsync();
         }
 
-        public ICommand? DeletePatientCommand {  get; set; }
-        public ICommand? EditPatientCommand { get; set; }
-
-        public ICommand? FilterPatientCommand { get; set; }
+        public ICommand? DeletePatientCommand { get; private set; }
+        public ICommand? EditPatientCommand { get; private set; }
+        public ICommand? SearchCommand { get; private set; }
 
         private void SetUpCommands()
         {
-            DeletePatientCommand = new Command<Patient>(async (patient) => await DeletePatient(patient));
-            EditPatientCommand = new Command<Patient>(async (patient) => await EditPatient(patient));
+            DeletePatientCommand = new Command<Patient>(async p => await DeletePatient(p));
+            EditPatientCommand = new Command<Patient>(async p => await EditPatient(p));
+            SearchCommand = new Command(async () => await ExecuteSearchAsync());
         }
 
-        private void FilterPatients()
+        public async Task ExecuteSearchAsync()
         {
-            string query = PatientSearchText?.ToLower() ?? "";
+            if (IsBusy) return;
 
-            var results = AllPatients
-                .Where(p => string.IsNullOrEmpty(query)
-                || (p.Name?.ToLower().Contains(query) ?? false))
-                .ToList();
+            if (string.IsNullOrWhiteSpace(SearchQuery))
+            {
+                ReplaceFiltered(AllPatients);
+                return;
+            }
 
+            await SearchPatientsAsync(SearchQuery);
+        }
+
+        private async Task SearchPatientsAsync(string query)
+        {
+            try
+            {
+                IsBusy = true;
+
+                var results = await PatientServiceProxy.Current.Search(query) ?? new List<Patient>();
+                ReplaceFiltered(results);
+            }
+            catch (Exception)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Failed to search patients. Please try again later.", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private void ReplaceFiltered(IEnumerable<Patient> patients)
+        {
             FilteredPatients.Clear();
-
-            foreach (var p in results)
+            foreach (var p in patients)
                 FilteredPatients.Add(p);
         }
 
@@ -112,7 +132,6 @@ namespace MAUI.ChartingSystem.ViewModels
                 return;
 
             bool confirm = await App.Current.MainPage.DisplayAlert("Confirm", $"Delete {patient.Display}?", "Yes", "No");
-
             if (confirm)
             {
                 await PatientServiceProxy.Current.Delete(patient);
@@ -127,8 +146,6 @@ namespace MAUI.ChartingSystem.ViewModels
 
             await Shell.Current.GoToAsync($"//Patient?patientId={patient.Id}");
         }
-
-
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {

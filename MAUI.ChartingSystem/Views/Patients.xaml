@@ -9,7 +9,8 @@
                 <Label Text="Patients Menu" FontSize="36" Style="{StaticResource HeaderLabel}" />
                 <SearchBar
                     Placeholder="Enter Patient Name"
-                    Text="{Binding PatientSearchText}"/>
+                    Text="{Binding SearchQuery}"
+                    SearchButtonPressed="SearchBar_SearchButtonPressed"/>
                 <Frame CornerRadius="10">
                     <StackLayout Spacing="24">
                         <Label Text="Patients List" FontSize="24" HorizontalOptions="Center"/>
