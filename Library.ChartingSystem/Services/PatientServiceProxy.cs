@@ -151,6 +151,7 @@ namespace Library.ChartingSystem.Services
             return Patients[index];
         }
 
+        // Search Patients
         public async Task<List<Patient>> Search(string query)
         {
             var dtos = await SearchAsync(new QueryRequest(query));
@@ -168,7 +169,7 @@ namespace Library.ChartingSystem.Services
         }
 
         // Get All Patients Async
-        public async Task<List<PatientDTO>> GetAllAsync()
+        private async Task<List<PatientDTO>> GetAllAsync()
         {
             var response = await new WebRequestHandler().Get($"{baseUrl}");
 
@@ -183,7 +184,7 @@ namespace Library.ChartingSystem.Services
         }
 
         // Get Patient by ID Async
-        public async Task<PatientDTO> GetByIdAsync(int id)
+        private async Task<PatientDTO> GetByIdAsync(int id)
         {
             var json = await new WebRequestHandler().Get($"{baseUrl}/{id}");
 
@@ -211,7 +212,7 @@ namespace Library.ChartingSystem.Services
         }
 
         // Delete Patient Async
-        public async Task<PatientDTO?> DeleteAsync(int id)
+        private async Task<PatientDTO?> DeleteAsync(int id)
         {
             var response = await new WebRequestHandler().Delete($"{baseUrl}/{id}");
 
@@ -225,7 +226,7 @@ namespace Library.ChartingSystem.Services
         }
 
         // Add Patient Async
-        public async Task<PatientDTO?> AddAsync(PatientDTO dto)
+        private async Task<PatientDTO?> AddAsync(PatientDTO dto)
         {
             if (dto == null) return null;
 
@@ -240,7 +241,7 @@ namespace Library.ChartingSystem.Services
         }
 
         // Update Patient Async
-        public async Task<PatientDTO?> UpdateAsync(PatientDTO dto)
+        private async Task<PatientDTO?> UpdateAsync(PatientDTO dto)
         {
             if (dto == null) return null;
 
@@ -254,7 +255,8 @@ namespace Library.ChartingSystem.Services
             return dtoFromServer;
         }
 
-        public async Task<List<PatientDTO>> SearchAsync(QueryRequest query)
+        // Search Patients Async
+        private async Task<List<PatientDTO>> SearchAsync(QueryRequest query)
         {
             var response = await new WebRequestHandler().Post($"{baseUrl}/search", query);
             

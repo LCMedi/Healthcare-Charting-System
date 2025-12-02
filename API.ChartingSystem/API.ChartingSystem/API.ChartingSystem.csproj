@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <Reference Include="Library.ChartingSystem">
-      <HintPath>..\..\Library.ChartingSystem\bin\Debug\net8.0\Library.ChartingSystem.dll</HintPath>
+      <HintPath>..\..\Library.ChartingSystem\obj\Debug\net8.0\Library.ChartingSystem.dll</HintPath>
     </Reference>
   </ItemGroup>
 

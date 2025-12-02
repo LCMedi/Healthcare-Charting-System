@@ -21,7 +21,7 @@ namespace API.ChartingSystem.Enterprise
         {
             var patients = _db.Patients
                 .Include(p => p.MedicalHistory)
-                .ThenInclude(m => m.CreatedBy)
+                //.ThenInclude(m => m.CreatedBy)
                 .ToList();
 
             return patients.Select(x => new PatientDTO(x)).ToList();
@@ -32,7 +32,7 @@ namespace API.ChartingSystem.Enterprise
         {
             var patient = _db.Patients
                 .Include(x => x.MedicalHistory)
-                .ThenInclude(m => m.CreatedBy)
+                //.ThenInclude(m => m.CreatedBy)
                 .FirstOrDefault(x => x.Id == id);
 
             if (patient == null) return null;
