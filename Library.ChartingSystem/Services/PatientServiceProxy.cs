@@ -9,10 +9,11 @@ namespace Library.ChartingSystem.Services
     public class PatientServiceProxy
     {
         private List<PatientDTO> _patients;
+        public List<Patient> Patients { get; } = new();
+        private const string baseUrl = "/patient";
 
         private static PatientServiceProxy? instance;
         private static object instanceLock = new object();
-        private const string baseUrl = "/patient";
 
         public static PatientServiceProxy Current
         {
@@ -40,8 +41,6 @@ namespace Library.ChartingSystem.Services
                 _patients = JsonConvert.DeserializeObject<List<PatientDTO>>(response) ?? new List<PatientDTO>();
             }
         }
-
-        public List<Patient> Patients { get; } = new();
 
         // Get Patient by ID
         public async Task<Patient> GetById(int id)
